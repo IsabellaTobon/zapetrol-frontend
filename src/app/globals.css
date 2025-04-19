@@ -1,26 +1,40 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f8f6f6;
+  --foreground: #0e1533;
+  --light-gray: #9c9c9c;
+  --dark-blue: #1d328f;
+  --yellow: #f5c20a;
 }
 
+/* Automatic dark mode based on de user's system  */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #01051b;
+    --foreground: #ededed;
+  }
+}
+
+/* Manual dark mode using .dark in <html> */
+.dark {
+  --background: #01051b;
+  --foreground: #ededed;
+}
+
+/* Tailwind variables */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary: var(--dark-blue);
+  --color-muted: var(--light-gray);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Arial, sans-serif;
+  /* @apply transition-colors duration-300; */
 }
