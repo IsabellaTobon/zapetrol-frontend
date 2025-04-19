@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
-import "./globals.css";
+import type { Metadata } from "next"
+import "./globals.css"
+import Navbar from "./components/Navbar"
 
 export const metadata: Metadata = {
   title: "Zapetrol",
@@ -8,14 +9,14 @@ export const metadata: Metadata = {
   themeColor: "#0f172a",
   icons: {
     apple: "/icons/apple-touch-icon.png",
-    icon: "/icons/favicon.ico",
+    icon: "favicon.ico",
   },
-};
+}
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
     <html lang="es">
@@ -26,8 +27,9 @@ export default function RootLayout({
         <link rel="icon" href="/icons/favicon.ico" />
       </head>
       <body>
+        <Navbar />
         {children}
       </body>
     </html>
-  );
+  )
 }
