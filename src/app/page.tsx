@@ -1,67 +1,61 @@
-'use client';
-import { useState, useEffect, useCallback } from "react";
-import StationList from "@/components/StationList";
-import { fetchGasPrices } from "@/api/carburantesApi";
-import { GasStation } from "@/api/carburantesApi";
+'use client'
+
+import { useState } from "react"
+import SearchForm from "@/components/SearchForm"
+import StationsList from "@/components/cards/StationsList"
+import { Gasolinera, transformarRespuesta } from "@/utils/transformData"
+import { fetchGasPrices } from "@/api/carburantesApi"
+
 
 export default function Home() {
-  const [searchParams, setSearchParams] = useState(""); // Término de búsqueda
-  const [stations, setStations] = useState<GasStation[]>([]); // Estaciones encontradas
-  const [loading, setLoading] = useState(false); // Estado de carga
-  const [error, setError] = useState<string | null>(null); // Error
+  const [estaciones, setEstaciones] = useState<Gasolinera[]>([])
+  const [codigoPostal, setCodigoPostal] = useState('')
+  const [loading, setLoading] = useState(false)
 
-  // Función para manejar la búsqueda, con debounce
-  const handleSearch = useCallback(async (term: string) => {
-    if (!term.trim()) {
-      setStations([]); // Limpiar resultados si el campo de búsqueda está vacío
-      return;
-    }
-
-    setLoading(true);
-    setError(null);
-
+  const buscarPorCodigoPostal = async (cp: string) => {
+    setCodigoPostal(cp)
+    setLoading(true)
     try {
-      const results: GasStation[] = await fetchGasPrices(term);
-      setStations(results);
-    } catch {
-      setError("Hubo un error al obtener las estaciones.");
+      const estacionesCrudas = await fetchGasPrices(cp)
+      const transformadas = transformarRespuesta(estacionesCrudas)
+      setEstaciones(transformadas)
+    } catch (error) {
+      console.error("Error al buscar gasolineras:", error)
+      setEstaciones([])
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  }, []);
-
-  // Ejecuta la búsqueda cuando cambia el término de búsqueda
-  useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      handleSearch(searchParams);
-    }, 500); // Espera 500ms después de que el usuario deje de escribir
-
-    return () => clearTimeout(delayDebounceFn); // Limpia el timeout si el término de búsqueda cambia rápidamente
-  }, [searchParams, handleSearch]);
+  }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-24 bg-">
-      <h1 className="text-3xl mb-4">Bienvenid@ a mi primera PWA!</h1>
-      
-      {/* Buscador */}
-      <div className="mb-4">
-        <label htmlFor="search" className="block text-lg mb-2">Buscar por código postal o coordenadas</label>
-        <input
-          type="text"
-          id="search"
-          className="p-2 border border-gray-300 rounded"
-          placeholder="Ej. 28001 o 40.4168,-3.7038"
-          value={searchParams}
-          onChange={(e) => setSearchParams(e.target.value)} // Actualiza el término de búsqueda
-        />
-      </div>
-      
-      {/* Mostrar mensaje de carga o error */}
-      {loading && <p>Cargando...</p>}
-      {error && <p className="text-red-500">{error}</p>}
+    <main className="p-4 max-w-5xl mx-auto">
+      <h1 className="text-3xl font-bold mb-4">Busca gasolineras por código postal</h1>
 
-      {/* Mostrar las estaciones encontradas */}
-      <StationList stations={stations} />
-    </div>
-  );
+      <SearchForm onBuscar={buscarPorCodigoPostal} />
+
+      {loading && (
+        <p className="text-gray-500">Buscando datos...</p>
+      )}
+
+      {!loading && estaciones.length > 0 ? (
+        <>
+          <h2 className="text-xl font-semibold mb-2">
+            Resultados en {codigoPostal}
+          </h2>
+          <StationsList estaciones={estaciones} />
+        </>
+      ) : (
+        !loading &&
+        codigoPostal && (
+          <p className="text-red-500">No se encontraron resultados para {codigoPostal}</p>
+        )
+      )}
+
+      {!codigoPostal && (
+        <div className="text-gray-500 mt-6">
+          <p>🔎 Introduce un código postal para buscar gasolineras cercanas.</p>
+        </div>
+      )}
+    </main>
+  )
 }

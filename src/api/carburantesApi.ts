@@ -1,44 +1,60 @@
-
-// API URL PARA OBTENER LOS PRECIOS DE LOS CARBURANTES
-const carburantesApi = {
-    // Endpoint para obtener datos por código postal
-    porCodigoPostal: (codigoPostal: string) =>
+const apiCarburantes = {
+    estacionesPorCodigoPostal: (codigoPostal: string) =>
         `https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres?codigoPostal=${codigoPostal}`,
 
-    // Endpoint para obtener datos por coordenadas GPS
-    porCoordenadas: (lat: string, lon: string) =>
+    estacionesPorCoordenadas: (lat: string, lon: string) =>
         `https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres?lat=${lat}&lon=${lon}`,
 }
 
-// INTERFAZ PARA LAS ESTACIONES DE SERVICIO
 export interface GasStation {
-    Rótulo: string;
-    Dirección: string;
-    "C.P.": string;
-    Municipio: string;
-    Horario: string;
-    "Precio Gasolina 95 E5": string;
-    "Precio Gasolina 98 E5": string;
-    "Precio Gasóleo A": string;
-    Latitud: string;
-    "Longitud (WGS84)": string;
-    // "Precio Biodiesel": string;
+    Rótulo: string
+    Dirección: string
+    "C.P.": string
+    Municipio: string
+    Horario: string
+    "Precio Gasolina 95 E5": string
+    "Precio Gasolina 98 E5": string
+    "Precio Gasóleo A": string
+    Latitud: string
+    "Longitud (WGS84)": string
 }
 
-// FUNCIÓN PARA OBTENER LOS PRECIOS DE LOS CARBURANTES
 export async function fetchGasPrices(location: string, isCoordinates: boolean = false): Promise<GasStation[]> {
     try {
-        const url = isCoordinates
-            ? carburantesApi.porCoordenadas(...(location.split(',').map(s => s.trim()) as [string, string]))
-            : carburantesApi.porCodigoPostal(location.trim());
+        let url: string;
 
-        const response = await fetch(url)
-        const data = await response.json()
+        // SI ES POR COORDENADAS, SEPARAMOS LAT Y LON
+        if (isCoordinates) {
+            const [lat, lon] = location.split(",");
+            url = apiCarburantes.estacionesPorCoordenadas(lat.trim(), lon.trim());
+        } else {
+            url = apiCarburantes.estacionesPorCodigoPostal(location.trim());
+        }
 
-        if (!data.ListaEESSPrecio) throw new Error("Sin datos")
+        const response = await fetch(url);
 
-        // Filtramos las estaciones de gasolina según la ubicación
-        return data.ListaEESSPrecio.map((station: Record<string, string>): GasStation => ({
+        if (!response.ok) {
+            throw new Error(`Error ${response.status}: No se pudieron obtener los datos`);
+        }
+
+        const data = await response.json();
+
+        if (!data.ListaEESSPrecio) {
+            throw new Error("Datos no disponibles");
+        }
+
+        // FILTRAMOS LAS ESTACIONES POR MUNICIPIO O CÓDIGO POSTAL
+        const filteredStations = data.ListaEESSPrecio.filter((station: { [key: string]: string }) => {
+            const municipio = station["Municipio"] || "";
+            const codigoPostal = station["C.P."] || "";
+
+            // FILTRAR POR MUNICIPIO O CÓDIGO POSTAL
+            return municipio.toLowerCase().includes(location.toLowerCase()) ||
+                codigoPostal.includes(location.trim());
+        });
+
+        // MAPEAMOS LOS RESULTADOS A LA INTERFAZ GASSTATION
+        return filteredStations.map((station: { [key: string]: string }): GasStation => ({
             Rótulo: station["Rótulo"] || "",
             Dirección: station["Dirección"] || "",
             "C.P.": station["C.P."] || "",
@@ -51,7 +67,7 @@ export async function fetchGasPrices(location: string, isCoordinates: boolean = 
             "Longitud (WGS84)": station["Longitud (WGS84)"] || "",
         }));
     } catch (error) {
-        console.error("Error API:", error);
+        console.error("Error obteniendo datos de gasolina:", error);
         return [];
     }
 }
