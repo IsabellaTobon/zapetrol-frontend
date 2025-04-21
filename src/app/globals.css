@@ -6,6 +6,9 @@
   --light-gray: #9c9c9c;
   --dark-blue: #1d328f;
   --yellow: #f5c20a;
+
+  /* Shadows */
+  --shadow-light: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* Automatic dark mode based on de user's system  */
@@ -20,6 +23,9 @@
 .dark {
   --background: #01051b;
   --foreground: #ededed;
+
+  /* Shadows for dark mode */
+  --shadow-dark: 0px 4px 6px rgba(179, 174, 174, 0.445);
 }
 
 /* Tailwind variables */
@@ -36,5 +42,5 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), Arial, sans-serif;
-  /* @apply transition-colors duration-300; */
+  @apply transition-colors duration-300;
 }
