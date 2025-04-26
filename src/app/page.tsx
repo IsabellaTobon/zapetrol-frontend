@@ -6,7 +6,6 @@ import StationsList from "@/components/cards/StationsList"
 import { Gasolinera, transformarRespuesta } from "@/utils/transformData"
 import { fetchGasPrices } from "@/api/carburantesApi"
 
-
 export default function Home() {
   const [estaciones, setEstaciones] = useState<Gasolinera[]>([])
   const [codigoPostal, setCodigoPostal] = useState('')
@@ -16,8 +15,15 @@ export default function Home() {
     setCodigoPostal(cp)
     setLoading(true)
     try {
-      const estacionesCrudas = await fetchGasPrices(cp)
-      const transformadas = transformarRespuesta(estacionesCrudas)
+      const datosEstaciones = await fetchGasPrices(cp)
+
+      const estacionesRaw = datosEstaciones.map(estacion => ({
+        ...estacion,
+        Localidad: estacion.Municipio || "Localidad no disponible", // Agregar propiedad Localidad
+        Provincia: "Provincia no disponible", // Agregar propiedad Provincia
+      }))
+
+      const transformadas = transformarRespuesta(estacionesRaw)
       setEstaciones(transformadas)
     } catch (error) {
       console.error("Error al buscar gasolineras:", error)

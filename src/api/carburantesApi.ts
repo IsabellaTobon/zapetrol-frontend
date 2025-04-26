@@ -6,7 +6,7 @@ const apiCarburantes = {
         `https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres?lat=${lat}&lon=${lon}`,
 }
 
-export interface GasStation {
+export interface StationData {
     Rótulo: string
     Dirección: string
     "C.P.": string
@@ -19,7 +19,7 @@ export interface GasStation {
     "Longitud (WGS84)": string
 }
 
-export async function fetchGasPrices(location: string, isCoordinates: boolean = false): Promise<GasStation[]> {
+export async function fetchGasPrices(location: string, isCoordinates: boolean = false): Promise<StationData[]> {
     try {
         let url: string;
 
@@ -53,8 +53,8 @@ export async function fetchGasPrices(location: string, isCoordinates: boolean = 
                 codigoPostal.includes(location.trim());
         });
 
-        // MAPEAMOS LOS RESULTADOS A LA INTERFAZ GASSTATION
-        return filteredStations.map((station: { [key: string]: string }): GasStation => ({
+        // MAPEAMOS LOS RESULTADOS A LA INTERFAZ STATION DATA
+        return filteredStations.map((station: { [key: string]: string }): StationData => ({
             Rótulo: station["Rótulo"] || "",
             Dirección: station["Dirección"] || "",
             "C.P.": station["C.P."] || "",

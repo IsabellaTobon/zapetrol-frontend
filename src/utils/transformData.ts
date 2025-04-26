@@ -17,7 +17,7 @@ export interface Gasolinera {
 }
 
 // DEFINE LA INTERFAZ PARA LOS DATOS DE ENTRADA 
-interface GasolineraRaw {
+export interface GasolineraRaw {
     "C.P.": string;
     "Dirección": string;
     "Horario": string;
@@ -36,16 +36,16 @@ interface GasolineraRaw {
 // ACTUALIZA EL TIPO DEL PARÁMETRO 'LISTA' A 'GasolineraRaw[]'
 export const transformarRespuesta = (lista: GasolineraRaw[]): Gasolinera[] => {
     return lista.map((item, index) => ({
-        id: item.IDEESS || `temp-id-${index}`, // IDEESS o genera un id temporal para evitar duplicados/errores
-        nombre: item["Rótulo"],
-        horario: item["Horario"],
-        direccion: item["Dirección"],
-        codigoPostal: item["C.P."],
-        localidad: item["Localidad"],
-        municipio: item["Municipio"],
-        provincia: item["Provincia"],
-        lat: item["Latitud"].replace(',', '.'),
-        lon: item["Longitud (WGS84)"].replace(',', '.'),
+        id: item.IDEESS || `temp-id-${index}`, // Genera un ID temporal si no está presente
+        nombre: item["Rótulo"] || 'Nombre no disponible',
+        horario: item["Horario"] || 'Horario no disponible',
+        direccion: item["Dirección"] || 'Dirección no disponible',
+        codigoPostal: item["C.P."] || 'Código Postal no disponible',
+        localidad: item["Localidad"] || 'Localidad no disponible', // Asegúrate de que esté presente
+        municipio: item["Municipio"] || 'Municipio no disponible', // Asegúrate de que esté presente
+        provincia: item["Provincia"] || 'Provincia no disponible', // Asegúrate de que esté presente
+        lat: item["Latitud"].replace(',', '.') || '0.0', // Asegúrate de que la latitud esté bien definida
+        lon: item["Longitud (WGS84)"].replace(',', '.') || '0.0', // Asegúrate de que la longitud esté bien definida
         precios: {
             gasolina95: item["Precio Gasolina 95 E5"] || undefined,
             gasolina98: item["Precio Gasolina 98 E5"] || undefined,
