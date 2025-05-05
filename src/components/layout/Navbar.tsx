@@ -57,7 +57,7 @@ export default function Navbar() {
                             className="mr-1"
                             strokeWidth={2}
                             size={20}
-                            color={isDarkMode ? "var(--yellow)" : "var(--dark-blue)"}
+                            color="var(--icon-accent)"
                         />
                         Favoritos
                     </button>
@@ -65,7 +65,7 @@ export default function Navbar() {
                         <User
                             className="mr-1"
                             size={20}
-                            color={isDarkMode ? "var(--yellow)" : "var(--dark-blue)"}
+                            color="var(--icon-accent)"
                         />
                         Iniciar sesión
                     </button>
@@ -75,9 +75,9 @@ export default function Navbar() {
                         aria-label="Cambiar tema"
                     >
                         {isDarkMode ? (
-                            <Sun size={20} color="var(--yellow)" />
+                            <Sun size={20} color="var(--icon-accent)" />
                         ) : (
-                            <Moon size={20} color="var(--dark-blue)" />
+                            <Moon size={20} color="var(--icon-accent)" />
                         )}
                     </button>
                 </nav>

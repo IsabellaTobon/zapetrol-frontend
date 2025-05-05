@@ -1,62 +1,100 @@
 @import "tailwindcss";
 
 :root {
+  /* BASE COLORS */
   --background: #f8f6f6;
   --foreground: #0e1533;
-  --dark-gray: #64748b; /* gray-500 */
-  --light-gray: #cbd5e1; /* gray-300 */
+  --white: #ffffff;
   --dark-blue: #1d328f;
+  --blue:#1136d8;
   --yellow: #f5c20a;
+  --dark-gray: #64748b;
+  --light-gray: #b9bbbd;
 
-  /* Shadows */
+  /* GRADIENTS */
+  --gradient1: linear-gradient(90deg, var(--dark-blue), var(--blue));
+  --gradient2: linear-gradient(90deg, var(--blue), var(--dark-blue));
+
+  /* BUTTON COLORS */
+  --btn-text: var(--white);
+  --btn-border: var(--yellow);
+
+  /* TEXT */
+  --muted-text: var(--dark-gray);
+
+  /* ACCENT */
+  --green-elegant: #2a9d8f;
+
+  /* SHADOWS */
   --shadow-light: 0px 4px 6px rgba(0, 0, 0, 0.1);
 
-  /* Dynamic colors for light mode */
+  /* ICONS */
+  --icon-accent: var(--dark-blue);
+
+  /* DYNAMIC COLORS */
   --color-gray-primary: var(--dark-gray);
   --color-gray-secondary: var(--light-gray);
 }
 
-/* Automatic dark mode based on the user's system */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #01051b;
-    --foreground: #ededed;
-
-    /* SWAP GRAY COLORS FOR DARK MODE */
-    --color-gray-primary: var(--light-gray);
-    --color-gray-secondary: var(--dark-gray);
-
-    /* SHADOWS FOR DARK MODE */
-    --shadow-dark: 0px 4px 6px rgba(179, 174, 174, 0.445);
-  }
+input::placeholder {
+  color: var(--muted-text);
+  opacity: 1;
 }
 
-/* MANUAL DARK MODE USING .dark IN <HTML> */
+/* ---------------------------------------------------------------------------------- */
+/* PREFERENCES DARK THEME */
 .dark {
+  /* BASE COLORS */
   --background: #01051b;
   --foreground: #ededed;
 
-  /* SWAP GRAY COLORS FOR DARK MODE */
+  /* GRADIENTS */
+  --gradient1: linear-gradient(90deg, var(--blue), var(--dark-blue));
+  --gradient2: linear-gradient(90deg, var(--dark-blue), var(--blue));
+
+  /* BUTTON COLORS */
+  --btn-text: var(--white);
+  --btn-border: var(--yellow);
+
+  /* TEXT */
+  --muted-text: var(--light-gray);
+  
+  /* ACCENT */
+  --green-elegant: #32b199;
+  
+  /* SHADOWS */
+  --shadow-dark: 0px 4px 6px rgba(179, 174, 174, 0.445);
+
+  /* ICONS */
+  --icon-accent: var(--yellow);
+  
+  /* DYNAMIX COLORS */
   --color-gray-primary: var(--light-gray);
   --color-gray-secondary: var(--dark-gray);
-
-  /* SHADOWS FOR DARK MODE */
-  --shadow-dark: 0px 4px 6px rgba(179, 174, 174, 0.445);
+  
 }
 
-/* VARIABLES */
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-primary: var(--dark-blue);
-  --color-muted: var(--color-gray-secondary);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.dark input::placeholder {
+  color: var(--light-gray);
 }
 
+/* ---------------------------------------------------------------------------------- */
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), Arial, sans-serif;
   @apply transition-colors duration-300;
 }
+
+
+/* ---------------------------------------------------------------------------------- */
+/* @theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--dark-blue);
+  --color-accent: var(--green-elegant);
+  --color-muted: var(--dark-gray);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+} */
