@@ -1,5 +1,5 @@
 import { useState } from "react"
-import "@/styles/Buttons.css"
+import "@/styles/buttons.css"
 
 interface SearchFormProps {
     onBuscar: (codigoPostal: string) => void

@@ -13,11 +13,16 @@
 
   /* GRADIENTS */
   --gradient1: linear-gradient(90deg, var(--dark-blue), var(--blue));
-  --gradient2: linear-gradient(90deg, var(--blue), var(--dark-blue));
+  --gradient2: linear-gradient(90deg, var(--dark-gray), var(--light-gray));
 
   /* BUTTON COLORS */
   --btn-text: var(--white);
   --btn-border: var(--yellow);
+
+  /* CARDS & LIST */
+  --card-text: var(--foreground);
+  --card-text2: var(--background);
+  --card-bg: var(--gradient2);
 
   /* TEXT */
   --muted-text: var(--dark-gray);
@@ -55,6 +60,11 @@ input::placeholder {
   /* BUTTON COLORS */
   --btn-text: var(--white);
   --btn-border: var(--yellow);
+
+  /* CARDS & LIST */
+  --card-text: var(--foreground);
+  --card-text2: var(--background);
+  --card-bg: var(--gradient1);
 
   /* TEXT */
   --muted-text: var(--light-gray);

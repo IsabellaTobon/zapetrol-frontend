@@ -1,0 +1,30 @@
+.gas-station-card {
+    padding: 1rem;
+    border: 1px solid var(--blue);
+    background: var(--gradient2);
+    /* box-shadow: var(--shadow-light); */
+    /* transition: transform 0.2s; */
+  }
+  
+  .gas-station-card:hover {
+    transform: scale(1.05);
+  }
+  
+  .gas-station-card h2 {
+    color: var(--foreground);
+  }
+  
+  .gas-station-card p {
+    color: var(--foreground);
+  }
+  
+  .gas-station-card .prices {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  
+  .gas-station-card .prices p {
+    color: var(--foreground);
+  }

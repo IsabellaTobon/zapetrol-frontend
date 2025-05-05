@@ -32,7 +32,7 @@ export default function Navbar() {
 
     return (
         <header
-            className={`bg-[var(--color-background)] text-[var(--color-foreground)] sticky top-0 z-50`}
+            className={"mb-6 bg-[var(--background)] text-[var(--foreground)] sticky top-0 z-50"}
             style={{
                 boxShadow: isDarkMode
                     ? "var(--shadow-dark)" // Sombra para modo oscuro
