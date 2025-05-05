@@ -15,17 +15,25 @@ export default function SearchForm({ onBuscar }: SearchFormProps) {
     }
 
     return (
-        <form onSubmit={handleSubmit} className="flex gap-2 mb-6">
+        <form onSubmit={handleSubmit} className="flex w-1/2 gap-2 mb-6">
             <input
                 type="text"
                 value={codigoPostal}
                 onChange={(e) => setCodigoPostal(e.target.value)}
-                placeholder="Introduce un código postal"
-                className="flex-1 p-2 rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-900"
+                placeholder="🔎 Introduce un código postal, ciudad o dirección"
+                className="flex-1 p-2 rounded border"
+                style={{
+                    borderColor: "var(--color-gray-primary)",
+                    color: "var(--foreground)",
+                }}
             />
             <button
                 type="submit"
-                className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700 transition"
+                className="px-4 py-2 rounded text-white hover:transition"
+                style={{
+                    boxShadow: "var(--shadow-light)",
+                    backgroundColor: "var(--color-primary)",
+                }}
             >
                 Buscar
             </button>

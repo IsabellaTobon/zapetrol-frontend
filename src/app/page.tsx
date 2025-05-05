@@ -34,33 +34,27 @@ export default function Home() {
   }
 
   return (
-    <main className="p-4 max-w-5xl mx-auto">
-      <h1 className="text-3xl font-bold mb-4">Busca gasolineras por código postal</h1>
+    <main className="p-4 max-w-5xl mx-auto flex flex-col items-center justify-start min-h-screen text-center">
+      <h1 className="text-3xl font-bold mb-4 uppercase">Busca gasolineras y compara</h1>
 
       <SearchForm onBuscar={buscarPorCodigoPostal} />
 
       {loading && (
-        <p className="text-gray-500">Buscando datos...</p>
+      <p className="text-gray-500">Buscando datos...</p>
       )}
 
       {!loading && estaciones.length > 0 ? (
-        <>
-          <h2 className="text-xl font-semibold mb-2">
-            Resultados en {codigoPostal}
-          </h2>
-          <StationsList estaciones={estaciones} />
-        </>
+      <>
+        <h2 className="text-xl font-semibold mb-2">
+        Resultados en {codigoPostal}
+        </h2>
+        <StationsList estaciones={estaciones} />
+      </>
       ) : (
-        !loading &&
-        codigoPostal && (
-          <p className="text-red-500">No se encontraron resultados para {codigoPostal}</p>
-        )
-      )}
-
-      {!codigoPostal && (
-        <div className="text-gray-500 mt-6">
-          <p>🔎 Introduce un código postal para buscar gasolineras cercanas.</p>
-        </div>
+      !loading &&
+      codigoPostal && (
+        <p className="text-red-500">No se encontraron resultados para {codigoPostal}</p>
+      )
       )}
     </main>
   )

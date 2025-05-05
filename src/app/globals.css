@@ -3,37 +3,53 @@
 :root {
   --background: #f8f6f6;
   --foreground: #0e1533;
-  --light-gray: #9c9c9c;
+  --dark-gray: #64748b; /* gray-500 */
+  --light-gray: #cbd5e1; /* gray-300 */
   --dark-blue: #1d328f;
   --yellow: #f5c20a;
 
   /* Shadows */
   --shadow-light: 0px 4px 6px rgba(0, 0, 0, 0.1);
+
+  /* Dynamic colors for light mode */
+  --color-gray-primary: var(--dark-gray);
+  --color-gray-secondary: var(--light-gray);
 }
 
-/* Automatic dark mode based on de user's system  */
+/* Automatic dark mode based on the user's system */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #01051b;
     --foreground: #ededed;
+
+    /* SWAP GRAY COLORS FOR DARK MODE */
+    --color-gray-primary: var(--light-gray);
+    --color-gray-secondary: var(--dark-gray);
+
+    /* SHADOWS FOR DARK MODE */
+    --shadow-dark: 0px 4px 6px rgba(179, 174, 174, 0.445);
   }
 }
 
-/* Manual dark mode using .dark in <html> */
+/* MANUAL DARK MODE USING .dark IN <HTML> */
 .dark {
   --background: #01051b;
   --foreground: #ededed;
 
-  /* Shadows for dark mode */
+  /* SWAP GRAY COLORS FOR DARK MODE */
+  --color-gray-primary: var(--light-gray);
+  --color-gray-secondary: var(--dark-gray);
+
+  /* SHADOWS FOR DARK MODE */
   --shadow-dark: 0px 4px 6px rgba(179, 174, 174, 0.445);
 }
 
-/* Tailwind variables */
+/* VARIABLES */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-primary: var(--dark-blue);
-  --color-muted: var(--light-gray);
+  --color-muted: var(--color-gray-secondary);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
