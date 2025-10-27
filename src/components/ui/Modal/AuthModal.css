@@ -1,0 +1,134 @@
+/* Fondo oscuro semitransparente */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Caja principal del modal */
+.modal {
+  background: #fff;
+  width: 100%;
+  max-width: 380px;
+  border-radius: 10px;
+  padding: 2rem;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  animation: fadeIn 0.3s ease;
+}
+
+/* Animación suave al aparecer */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Botón de cierre */
+.close-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #888;
+  transition: color 0.2s ease;
+}
+
+.close-btn:hover {
+  color: #000;
+}
+
+/* Pestañas */
+.tabs {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #eee;
+}
+
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 0.5rem 0;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  color: #666;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.tab:hover {
+  color: #000;
+}
+
+.tab.active {
+  font-weight: 600;
+  color: #0078ff;
+  border-bottom: 2px solid #0078ff;
+}
+
+/* Formulario */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+input {
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus {
+  outline: none;
+  border-color: #0078ff;
+  box-shadow: 0 0 4px rgba(0, 120, 255, 0.3);
+}
+
+/* Botón principal */
+button[type="submit"] {
+  background: #0078ff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 0.7rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+button[type="submit"]:hover {
+  background: #005fcc;
+}
+
+/* Texto del cambio de modo (login/register) */
+p {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: #0078ff;
+  cursor: pointer;
+  font-weight: 500;
+  padding: 0;
+  font-size: 0.9rem;
+}
+
+.link-btn:hover {
+  text-decoration: underline;
+}
