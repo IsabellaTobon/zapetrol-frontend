@@ -13,8 +13,8 @@ const [isRegistering, setIsRegistering] = useState(false);
       <nav className="navbar">
         <h1>Zapetrol Navbar</h1>
         {/* Botones */}
-        <button onClick={() => setShowLoginModal(true)}>Login</button>
-        <button onClick={() => setIsRegistering(true)}>Registrarse</button>
+        <button onClick={() => { setShowLoginModal(true); setIsRegistering(false); }}>Iniciar sesión</button>
+        <button onClick={() => { setIsRegistering(true); setShowLoginModal(false); }}>Registrarse</button>
       </nav>
 
       {showLoginModal && <LoginModal onClose={() => setShowLoginModal(false)} />}
