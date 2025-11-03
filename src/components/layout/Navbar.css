@@ -15,6 +15,12 @@
   gap: var(--space-4, 16px);
 }
 
+.welcome {
+  color: var(--text-300);
+  margin-right: 4px;
+  font-size: 14px;
+}
+
 /* Marca */
 .nav-brand {
   display: flex;

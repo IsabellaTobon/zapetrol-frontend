@@ -1,65 +1,57 @@
+// Navbar.tsx
 import { useEffect, useState } from 'react';
 import './Navbar.css';
+import { useAuth } from '../../hooks/useAuth';
+import toast from 'react-hot-toast';
 
 interface NavbarProps {
   onOpenAuthModal?: () => void;
 }
 
-/* =========================================
-  ThemeToggle: alterna entre modo claro/oscuro
-========================================= */
 function ThemeToggle() {
   const [theme, setTheme] = useState<'light' | 'dark'>('dark');
-
   useEffect(() => {
-    // Al cargar: detecta tema guardado o preferencia del sistema
     const saved = localStorage.getItem('theme') as 'light' | 'dark' | null;
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const initial = saved ?? (prefersDark ? 'dark' : 'light');
     setTheme(initial);
     document.documentElement.setAttribute('data-theme', initial);
   }, []);
-
   function toggleTheme() {
     const next = theme === 'light' ? 'dark' : 'light';
     setTheme(next);
     document.documentElement.setAttribute('data-theme', next);
     localStorage.setItem('theme', next);
   }
-
   return (
-    <button
-      onClick={toggleTheme}
-      className="btn btn-outline"
-      aria-label="Cambiar tema"
-      title={theme === 'light' ? 'Activar modo oscuro' : 'Activar modo claro'}
-    >
+    <button onClick={toggleTheme} className="btn btn-outline" aria-label="Cambiar tema" title={theme === 'light' ? 'Activar modo oscuro' : 'Activar modo claro'}>
       {theme === 'light' ? '🌙' : '🌞'}
     </button>
   );
 }
 
-/* =========================================
-  Navbar principal
-========================================= */
 export default function Navbar({ onOpenAuthModal }: NavbarProps) {
+  const { user, logout } = useAuth();
+
+  const shortName = user
+    ? (user.email?.split('@')[0] || 'usuario')
+    : null;
+
+  function handleLogout() {
+    logout();
+    toast.success('Sesión cerrada');
+  }
+
   return (
     <header className="navbar">
       <div className="nav-inner container">
-        {/* === Logo / marca === */}
         <a className="nav-brand" href="/">
           <span className="brand-mark">ZP</span>
           <span className="brand-text">Zapetrol</span>
         </a>
 
-        {/* === Espacio para links de navegación === */}
-        <nav className="nav-links" aria-label="Principal">
-          {/* Ejemplo:
-          <a href="/productos">Productos</a>
-          <a href="/contacto">Contacto</a> */}
-        </nav>
+        <nav className="nav-links" aria-label="Principal" />
 
-        {/* === Acciones principales === */}
         <div className="nav-actions">
           <ThemeToggle />
           <a
@@ -70,9 +62,19 @@ export default function Navbar({ onOpenAuthModal }: NavbarProps) {
           >
             API Docs
           </a>
-          <button className="btn btn-primary" onClick={onOpenAuthModal}>
-            Iniciar sesión
-          </button>
+
+          {!user ? (
+            <button className="btn btn-primary" onClick={onOpenAuthModal}>
+              Iniciar sesión
+            </button>
+          ) : (
+            <>
+              <span className="welcome">Hola, {shortName}👋!</span>
+              <button className="btn btn-outline" onClick={handleLogout}>
+                Cerrar sesión
+              </button>
+            </>
+          )}
         </div>
       </div>
     </header>

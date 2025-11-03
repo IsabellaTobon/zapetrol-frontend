@@ -1,11 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './AuthModal.css';
 import { useAuth } from '../../../hooks/useAuth';
 import toast from 'react-hot-toast';
 
-/* =========================================
-  AuthModal: Login / Registro con validación
-========================================= */
 type Mode = 'login' | 'register';
 
 interface AuthModalProps {
@@ -29,9 +26,14 @@ export default function AuthModal({ initialMode = 'login', onClose }: AuthModalP
     setFormData(prev => ({ ...prev, [name]: value }));
   }
 
+  // Limpia contraseñas al cambiar de modo (UX)
+  useEffect(() => {
+    setFormData(prev => ({ ...prev, password: '', confirmPassword: '' }));
+  }, [mode]);
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (loading) return; // Evita dobles envíos
+    if (loading) return;
 
     const email = formData.email.trim().toLowerCase();
     const password = formData.password;
@@ -53,21 +55,22 @@ export default function AuthModal({ initialMode = 'login', onClose }: AuthModalP
           password,
         });
 
-        toast.success('Registro exitoso 🎉');
-      } else {
-        await doLogin({ email, password });
-        toast.success('Inicio de sesión correcto 👋');
+        // ✅ Mantén el modal abierto y cambia a la pestaña Login
+        toast.success('Registro exitoso. Inicia sesión para continuar 🎉');
+        setMode('login');
+        setFormData(prev => ({ ...prev, password: '', confirmPassword: '' }));
+        return;
       }
 
-      onClose?.();
+      // LOGIN
+      await doLogin({ email, password });
+      toast.success('Inicio de sesión correcto 👋');
+      onClose?.(); // ✅ cierra el modal tras loguear
     } catch (err: any) {
-      // Muestra el mensaje devuelto por Nest si existe
       toast.error(
         err?.response?.data?.message ??
         (mode === 'register' ? 'Error registrando' : 'Error iniciando sesión')
       );
-
-      // Limpia contraseñas por seguridad
       setFormData(prev => ({ ...prev, password: '', confirmPassword: '' }));
     }
   }
@@ -75,11 +78,9 @@ export default function AuthModal({ initialMode = 'login', onClose }: AuthModalP
   return (
     <div className="modal-overlay">
       <div className="modal" role="dialog" aria-modal="true" aria-labelledby="auth-tabs">
-        <button className="close-btn" onClick={onClose} aria-label="Cerrar">
-          ✕
-        </button>
+        <button className="close-btn" onClick={onClose} aria-label="Cerrar">✕</button>
 
-        {/* Pestañas */}
+        {/* Tabs */}
         <div className="tabs" role="tablist" id="auth-tabs">
           <button
             role="tab"
@@ -99,7 +100,7 @@ export default function AuthModal({ initialMode = 'login', onClose }: AuthModalP
           </button>
         </div>
 
-        {/* Formulario */}
+        {/* Form */}
         <form onSubmit={handleSubmit}>
           {mode === 'register' && (
             <input
@@ -111,6 +112,7 @@ export default function AuthModal({ initialMode = 'login', onClose }: AuthModalP
               onChange={handleChange}
               className="input"
               autoComplete="name"
+              autoFocus={mode === 'register'}
             />
           )}
 
@@ -123,6 +125,7 @@ export default function AuthModal({ initialMode = 'login', onClose }: AuthModalP
             onChange={handleChange}
             className="input"
             autoComplete="email"
+            autoFocus={mode === 'login'}
           />
 
           <input
