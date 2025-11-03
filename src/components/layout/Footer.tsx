@@ -1,14 +1,22 @@
-import React from 'react'
-import './Footer.css'
+import React from 'react';
+import './Footer.css';
 
-function Footer() {
+export default function Footer() {
+  const year = new Date().getFullYear();
   return (
-    <>
-      <div className="footer-container">
-        <p>Esto es el Footer</p>
+    <footer className="footer">
+      <div className="footer-inner">
+        <p>
+          © {year} Zapetrol ·{' '}
+          <a
+            href="https://api.precioil.es"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            API oficial
+          </a>
+        </p>
       </div>
-    </>
-  )
+    </footer>
+  );
 }
-
-export default Footer
