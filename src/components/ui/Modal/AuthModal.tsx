@@ -31,30 +31,44 @@ export default function AuthModal({ initialMode = 'login', onClose }: AuthModalP
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (loading) return; // Evita dobles envíos
+
+    const email = formData.email.trim().toLowerCase();
+    const password = formData.password;
 
     try {
       if (mode === 'register') {
-        if (formData.password !== formData.confirmPassword) {
+        if (password !== formData.confirmPassword) {
           toast.error('Las contraseñas no coinciden');
           return;
         }
+        if (password.length < 6) {
+          toast.error('La contraseña debe tener al menos 6 caracteres');
+          return;
+        }
+
         await doRegister({
-          name: formData.name,
-          email: formData.email,
-          password: formData.password,
+          name: formData.name.trim(),
+          email,
+          password,
         });
+
         toast.success('Registro exitoso 🎉');
       } else {
-        await doLogin({
-          email: formData.email,
-          password: formData.password,
-        });
+        await doLogin({ email, password });
         toast.success('Inicio de sesión correcto 👋');
       }
 
       onClose?.();
     } catch (err: any) {
-      toast.error(err?.response?.data?.message ?? 'Error en la autenticación');
+      // Muestra el mensaje devuelto por Nest si existe
+      toast.error(
+        err?.response?.data?.message ??
+        (mode === 'register' ? 'Error registrando' : 'Error iniciando sesión')
+      );
+
+      // Limpia contraseñas por seguridad
+      setFormData(prev => ({ ...prev, password: '', confirmPassword: '' }));
     }
   }
 
@@ -139,8 +153,8 @@ export default function AuthModal({ initialMode = 'login', onClose }: AuthModalP
             {loading
               ? 'Procesando...'
               : mode === 'login'
-              ? 'Iniciar sesión'
-              : 'Registrarse'}
+                ? 'Iniciar sesión'
+                : 'Registrarse'}
           </button>
         </form>
       </div>
