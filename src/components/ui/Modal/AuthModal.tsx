@@ -3,10 +3,13 @@ import './AuthModal.css';
 import { useAuth } from '../../../hooks/useAuth';
 import toast from 'react-hot-toast';
 
+/* =========================================
+  AuthModal: Login / Registro con validación
+========================================= */
 type Mode = 'login' | 'register';
 
 interface AuthModalProps {
-  initialMode?: Mode;  // por defecto 'login'
+  initialMode?: Mode;
   onClose?: () => void;
 }
 
@@ -19,7 +22,7 @@ export default function AuthModal({ initialMode = 'login', onClose }: AuthModalP
     confirmPassword: '',
   });
 
-  const { doLogin, doRegister, loading, error } = useAuth();
+  const { doLogin, doRegister, loading } = useAuth();
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
@@ -28,45 +31,44 @@ export default function AuthModal({ initialMode = 'login', onClose }: AuthModalP
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const email = formData.email.trim();
-    const password = formData.password;
-    const name = formData.name.trim();
 
-    if (mode === 'register') {
-      if (password !== formData.confirmPassword) return toast.error('Las contraseñas no coinciden');
-      if (password.length < 6) return toast.error('La contraseña debe tener al menos 6 caracteres');
-
-      try {
-        await doRegister({ name, email, password }); // no envío confirmPassword
-        toast.success('Registro correcto');
-        onClose?.();
-      } catch {
-        toast.error(error ?? 'Error registrando');
-      }
-      return;
-    }
-
-    // login
     try {
-      await doLogin({ email, password });
-      toast.success('Inicio de sesión correcto');
+      if (mode === 'register') {
+        if (formData.password !== formData.confirmPassword) {
+          toast.error('Las contraseñas no coinciden');
+          return;
+        }
+        await doRegister({
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+        });
+        toast.success('Registro exitoso 🎉');
+      } else {
+        await doLogin({
+          email: formData.email,
+          password: formData.password,
+        });
+        toast.success('Inicio de sesión correcto 👋');
+      }
+
       onClose?.();
-    } catch {
-      toast.error(error ?? 'Error iniciando sesión');
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message ?? 'Error en la autenticación');
     }
   }
 
   return (
-    <div className="modal-overlay auth-modal">
-      <div className="modal" role="dialog" aria-modal="true" aria-labelledby="auth-title">
-        <button className="close-btn" onClick={onClose} aria-label="Cerrar">X</button>
+    <div className="modal-overlay">
+      <div className="modal" role="dialog" aria-modal="true" aria-labelledby="auth-tabs">
+        <button className="close-btn" onClick={onClose} aria-label="Cerrar">
+          ✕
+        </button>
 
-        {/* Tabs */}
-        <div className="tabs" role="tablist" aria-label="Autenticación" id="auth-tabs">
+        {/* Pestañas */}
+        <div className="tabs" role="tablist" id="auth-tabs">
           <button
-            id="tab-login"
             role="tab"
-            aria-controls="panel-login"
             aria-selected={mode === 'login'}
             className={`tab ${mode === 'login' ? 'active' : ''}`}
             onClick={() => setMode('login')}
@@ -74,9 +76,7 @@ export default function AuthModal({ initialMode = 'login', onClose }: AuthModalP
             Iniciar sesión
           </button>
           <button
-            id="tab-register"
             role="tab"
-            aria-controls="panel-register"
             aria-selected={mode === 'register'}
             className={`tab ${mode === 'register' ? 'active' : ''}`}
             onClick={() => setMode('register')}
@@ -85,12 +85,8 @@ export default function AuthModal({ initialMode = 'login', onClose }: AuthModalP
           </button>
         </div>
 
-        {/* Form */}
-        <h2 id="auth-title" className="sr-only">
-          {mode === 'login' ? 'Iniciar sesión' : 'Registrarse'}
-        </h2>
-
-        <form onSubmit={handleSubmit} aria-labelledby="auth-title">
+        {/* Formulario */}
+        <form onSubmit={handleSubmit}>
           {mode === 'register' && (
             <input
               type="text"
@@ -99,6 +95,7 @@ export default function AuthModal({ initialMode = 'login', onClose }: AuthModalP
               required
               value={formData.name}
               onChange={handleChange}
+              className="input"
               autoComplete="name"
             />
           )}
@@ -106,10 +103,11 @@ export default function AuthModal({ initialMode = 'login', onClose }: AuthModalP
           <input
             type="email"
             name="email"
-            placeholder="Email"
+            placeholder="Correo electrónico"
             required
             value={formData.email}
             onChange={handleChange}
+            className="input"
             autoComplete="email"
           />
 
@@ -120,6 +118,7 @@ export default function AuthModal({ initialMode = 'login', onClose }: AuthModalP
             required
             value={formData.password}
             onChange={handleChange}
+            className="input"
             autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
           />
 
@@ -131,16 +130,18 @@ export default function AuthModal({ initialMode = 'login', onClose }: AuthModalP
               required
               value={formData.confirmPassword}
               onChange={handleChange}
+              className="input"
               autoComplete="new-password"
             />
           )}
 
-          <button type="submit" disabled={loading}>
-            {loading ? 'Procesando...' : mode === 'login' ? 'Iniciar sesión' : 'Registrarse'}
+          <button type="submit" className="btn btn-primary" disabled={loading}>
+            {loading
+              ? 'Procesando...'
+              : mode === 'login'
+              ? 'Iniciar sesión'
+              : 'Registrarse'}
           </button>
-
-          {/* PRUEBA: además del toast, muestro error abajo */}
-          {error && <p className="error">{error}</p>}
         </form>
       </div>
     </div>

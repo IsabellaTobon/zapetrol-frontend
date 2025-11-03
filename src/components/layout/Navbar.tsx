@@ -1,49 +1,65 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './Navbar.css';
 
 interface NavbarProps {
   onOpenAuthModal?: () => void;
 }
 
-/* Botón para cambiar entre modo claro/oscuro */
+/* =========================================
+  ThemeToggle: alterna entre modo claro/oscuro
+========================================= */
 function ThemeToggle() {
+  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
+
+  useEffect(() => {
+    // Al cargar: detecta tema guardado o preferencia del sistema
+    const saved = localStorage.getItem('theme') as 'light' | 'dark' | null;
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initial = saved ?? (prefersDark ? 'dark' : 'light');
+    setTheme(initial);
+    document.documentElement.setAttribute('data-theme', initial);
+  }, []);
+
   function toggleTheme() {
-    const current = document.documentElement.getAttribute('data-theme');
-    const next = current === 'light' ? 'dark' : 'light';
+    const next = theme === 'light' ? 'dark' : 'light';
+    setTheme(next);
     document.documentElement.setAttribute('data-theme', next);
     localStorage.setItem('theme', next);
   }
 
   return (
-    <button onClick={toggleTheme} className="btn btn-outline" aria-label="Cambiar tema">
-      🌓
+    <button
+      onClick={toggleTheme}
+      className="btn btn-outline"
+      aria-label="Cambiar tema"
+      title={theme === 'light' ? 'Activar modo oscuro' : 'Activar modo claro'}
+    >
+      {theme === 'light' ? '🌙' : '🌞'}
     </button>
   );
 }
 
-/* Navbar principal */
+/* =========================================
+  Navbar principal
+========================================= */
 export default function Navbar({ onOpenAuthModal }: NavbarProps) {
-  // Recupera tema guardado o usa preferencia del sistema
-  useEffect(() => {
-    const saved = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    document.documentElement.setAttribute(
-      'data-theme',
-      saved ?? (prefersDark ? 'dark' : 'light')
-    );
-  }, []);
-
   return (
     <header className="navbar">
       <div className="nav-inner container">
+        {/* === Logo / marca === */}
         <a className="nav-brand" href="/">
           <span className="brand-mark">ZP</span>
           <span className="brand-text">Zapetrol</span>
         </a>
 
+        {/* === Espacio para links de navegación === */}
         <nav className="nav-links" aria-label="Principal">
+          {/* Ejemplo:
+          <a href="/productos">Productos</a>
+          <a href="/contacto">Contacto</a> */}
         </nav>
 
+        {/* === Acciones principales === */}
         <div className="nav-actions">
           <ThemeToggle />
           <a

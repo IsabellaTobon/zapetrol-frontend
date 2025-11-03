@@ -2,24 +2,23 @@
   width: 100%;
   padding: 16px 0;
   margin-top: 64px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(10, 11, 13, 0.85);
+  background: var(--bg-900);
+  border-top: 1px solid var(--stroke);
   text-align: center;
 }
 
-.footer-inner p {
-  color: rgba(255, 255, 255, 0.6);
+.footer p {
+  color: var(--text-500);
   font-size: 14px;
   margin: 0;
 }
 
-.footer-inner a {
-  color: #8a5fe8;
+.footer a {
+  color: var(--brand);
   text-decoration: none;
   font-weight: 500;
-  transition: color 0.2s ease;
 }
 
-.footer-inner a:hover {
-  color: #b28aff;
+.footer a:hover {
+  text-decoration: underline;
 }
