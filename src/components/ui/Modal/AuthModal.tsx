@@ -1,45 +1,72 @@
-import React, { useState } from 'react'
-import './AuthModal.css'
+import React, { useState } from 'react';
+import './AuthModal.css';
+import { useAuth } from '../../../hooks/useAuth';
+import toast from 'react-hot-toast';
 
-type Mode = 'login' | 'register'
+type Mode = 'login' | 'register';
 
 interface AuthModalProps {
-  initialMode?: Mode // por defecto 'login'
-  onClose?: () => void
+  initialMode?: Mode;  // por defecto 'login'
+  onClose?: () => void;
 }
 
 export default function AuthModal({ initialMode = 'login', onClose }: AuthModalProps) {
-  const [mode, setMode] = useState<Mode>(initialMode)
+  const [mode, setMode] = useState<Mode>(initialMode);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
-    confirmPassword: ''
-  })
+    confirmPassword: '',
+  });
+
+  const { doLogin, doRegister, loading, error } = useAuth();
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const { name, value } = e.target
-    setFormData(prev => ({ ...prev, [name]: value }))
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
   }
 
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    if (mode === 'register' && formData.password !== formData.confirmPassword) {
-      alert('Las contraseñas no coinciden')
-      return
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    const email = formData.email.trim();
+    const password = formData.password;
+    const name = formData.name.trim();
+
+    if (mode === 'register') {
+      if (password !== formData.confirmPassword) return toast.error('Las contraseñas no coinciden');
+      if (password.length < 6) return toast.error('La contraseña debe tener al menos 6 caracteres');
+
+      try {
+        await doRegister({ name, email, password }); // no envío confirmPassword
+        toast.success('Registro correcto');
+        onClose?.();
+      } catch {
+        toast.error(error ?? 'Error registrando');
+      }
+      return;
     }
-    console.log('Datos enviados:', { mode, ...formData })
+
+    // login
+    try {
+      await doLogin({ email, password });
+      toast.success('Inicio de sesión correcto');
+      onClose?.();
+    } catch {
+      toast.error(error ?? 'Error iniciando sesión');
+    }
   }
 
   return (
     <div className="modal-overlay">
-      <div className="modal" role="dialog" aria-modal="true" aria-labelledby="auth-tabs">
+      <div className="modal" role="dialog" aria-modal="true" aria-labelledby="auth-title">
         <button className="close-btn" onClick={onClose} aria-label="Cerrar">X</button>
 
-        {/* Pestañas */}
+        {/* Tabs */}
         <div className="tabs" role="tablist" aria-label="Autenticación" id="auth-tabs">
           <button
+            id="tab-login"
             role="tab"
+            aria-controls="panel-login"
             aria-selected={mode === 'login'}
             className={`tab ${mode === 'login' ? 'active' : ''}`}
             onClick={() => setMode('login')}
@@ -47,7 +74,9 @@ export default function AuthModal({ initialMode = 'login', onClose }: AuthModalP
             Iniciar sesión
           </button>
           <button
+            id="tab-register"
             role="tab"
+            aria-controls="panel-register"
             aria-selected={mode === 'register'}
             className={`tab ${mode === 'register' ? 'active' : ''}`}
             onClick={() => setMode('register')}
@@ -56,8 +85,12 @@ export default function AuthModal({ initialMode = 'login', onClose }: AuthModalP
           </button>
         </div>
 
-        {/* Formulario */}
-        <form onSubmit={handleSubmit}>
+        {/* Form */}
+        <h2 id="auth-title" className="sr-only">
+          {mode === 'login' ? 'Iniciar sesión' : 'Registrarse'}
+        </h2>
+
+        <form onSubmit={handleSubmit} aria-labelledby="auth-title">
           {mode === 'register' && (
             <input
               type="text"
@@ -102,11 +135,14 @@ export default function AuthModal({ initialMode = 'login', onClose }: AuthModalP
             />
           )}
 
-          <button type="submit">
-            {mode === 'login' ? 'Iniciar sesión' : 'Registrarse'}
+          <button type="submit" disabled={loading}>
+            {loading ? 'Procesando...' : mode === 'login' ? 'Iniciar sesión' : 'Registrarse'}
           </button>
+
+          {/* PRUEBA: además del toast, muestro error abajo */}
+          {error && <p className="error">{error}</p>}
         </form>
       </div>
     </div>
-  )
+  );
 }
