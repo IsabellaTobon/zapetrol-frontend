@@ -1,0 +1,96 @@
+/* === Tema base (dark) === */
+:root {
+  /* Brand */
+  --brand: #8a5fe8;
+  --brand-2: #5d5fef;
+
+  /* Fondo y superficies */
+  --bg-900: #0b0c10;
+  --bg-850: #0f1115;
+  --bg-800: #171a22;
+
+  /* Texto */
+  --text-100: #ffffff;
+  --text-300: rgba(255, 255, 255, 0.86);
+  --text-500: rgba(255, 255, 255, 0.65);
+  --text-700: rgba(255, 255, 255, 0.45);
+
+  /* Bordes, sombras */
+  --stroke: rgba(255, 255, 255, 0.10);
+  --stroke-strong: rgba(255, 255, 255, 0.18);
+  --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.35);
+
+  /* Layout */
+  --radius: 12px;
+  --radius-lg: 16px;
+  --container: 1120px;
+}
+
+/* === Tema claro === */
+:root[data-theme='light'] {
+  --brand: #6a3ff2;
+  --brand-2: #7c57ff;
+
+  --bg-900: #ffffff;
+  --bg-850: #f9fafc;
+  --bg-800: #f2f3f7;
+
+  --text-100: #0b0c10;
+  --text-300: #202124;
+  --text-500: #3c4043;
+  --text-700: #5f6368;
+
+  --stroke: rgba(0, 0, 0, 0.08);
+  --stroke-strong: rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* === Helpers reutilizables === */
+.container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.btn {
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 14px;
+  padding: 10px 14px;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--brand), var(--brand-2));
+  color: #fff;
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--stroke);
+  color: var(--text-300);
+}
+
+.btn-outline:hover {
+  background: var(--bg-800);
+}
+
+.input {
+  padding: 12px;
+  border-radius: var(--radius);
+  border: 1px solid var(--stroke);
+  background: var(--bg-800);
+  color: var(--text-300);
+  transition: all 0.2s ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--brand);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand) 20%, transparent);
+}

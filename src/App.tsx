@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './App.css'
+import './styles/theme.css'
 import Navbar from './components/layout/Navbar'
 import Footer from './components/layout/Footer'
 import { Toaster } from 'react-hot-toast'

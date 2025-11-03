@@ -57,7 +57,7 @@ export default function AuthModal({ initialMode = 'login', onClose }: AuthModalP
   }
 
   return (
-    <div className="modal-overlay">
+    <div className="modal-overlay auth-modal">
       <div className="modal" role="dialog" aria-modal="true" aria-labelledby="auth-title">
         <button className="close-btn" onClick={onClose} aria-label="Cerrar">X</button>
 
