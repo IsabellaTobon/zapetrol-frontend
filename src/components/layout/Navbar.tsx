@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './Navbar.css';
-import { useAuth } from '../../hooks/useAuth';
+import { useAuthContext } from '../../hooks/useAuthContext';
 import toast from 'react-hot-toast';
 
 interface NavbarProps {
@@ -30,7 +30,7 @@ function ThemeToggle() {
 }
 
 export default function Navbar({ onOpenAuthModal }: NavbarProps) {
-  const { user, logout } = useAuth();
+  const { user, logout } = useAuthContext();
 
   // Muestra el botón solo si el usuario existe y tiene role admin
   const isAdmin = user?.role === 'admin';

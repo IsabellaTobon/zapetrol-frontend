@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './AuthModal.css';
-import { useAuth } from '../../../hooks/useAuth';
+import { useAuthContext } from '../../../hooks/useAuthContext';
 import toast from 'react-hot-toast';
 
 type Mode = 'login' | 'register';
@@ -19,7 +19,7 @@ export default function AuthModal({ initialMode = 'login', onClose }: AuthModalP
     confirmPassword: '',
   });
 
-  const { doLogin, doRegister, loading } = useAuth();
+  const { doLogin, doRegister, loading } = useAuthContext();
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
