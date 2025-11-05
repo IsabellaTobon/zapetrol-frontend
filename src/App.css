@@ -1,5 +1,11 @@
 /* Base layout a ancho completo */
-html, body, #root { width: 100%; height: 100%; }
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+}
+
 body {
   margin: 0;
   background: #1f1f1f;
@@ -8,4 +14,7 @@ body {
 }
 
 /* Contenido centrado SOLO en main */
-main { max-width: 90%; text-align: center; }
+main {
+  min-height: calc(100vh - 200px);
+  padding: 2rem 0;
+}

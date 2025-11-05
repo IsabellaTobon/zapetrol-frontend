@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import './Navbar.css';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import toast from 'react-hot-toast';
@@ -47,16 +48,16 @@ export default function Navbar({ onOpenAuthModal }: NavbarProps) {
   return (
     <header className="navbar">
       <div className="nav-inner container">
-        <a className="nav-brand" href="/">
+        <Link className="nav-brand" to="/">
           <span className="brand-mark">ZP</span>
           <span className="brand-text">Zapetrol</span>
-        </a>
+        </Link>
 
         <nav className="nav-links" aria-label="Principal">
           {isAdmin && (
-            <a href="/admin" className="btn btn-outline">
+            <Link to="/admin" className="btn btn-outline">
               Panel de Admin
-            </a>
+            </Link>
           )}
         </nav>
 

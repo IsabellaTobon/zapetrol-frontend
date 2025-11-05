@@ -24,6 +24,22 @@ export type MePayload = {
   exp: number;
 };
 
+export type User = {
+  id: number;
+  email: string;
+  name?: string;
+  role: "user" | "admin";
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type UpdateUserDto = {
+  email?: string;
+  name?: string;
+  role?: "user" | "admin";
+  password?: string;
+};
+
 export async function loginAPI(input: { email: string; password: string }) {
   const { data } = await api.post<{ access_token: string }>(
     "/auth/login",
@@ -45,4 +61,25 @@ export async function registerAPI(input: {
 export async function meAPI() {
   const { data } = await api.get<MePayload>("/auth/me");
   return data;
+}
+
+// === ADMIN ENDPOINTS ===
+
+export async function getAllUsersAPI() {
+  const { data } = await api.get<User[]>("/admin/users");
+  return data;
+}
+
+export async function getUserByIdAPI(id: number) {
+  const { data } = await api.get<User>(`/admin/users/${id}`);
+  return data;
+}
+
+export async function updateUserAPI(id: number, input: UpdateUserDto) {
+  const { data } = await api.put<User>(`/admin/users/${id}`, input);
+  return data;
+}
+
+export async function deleteUserAPI(id: number) {
+  await api.delete(`/admin/users/${id}`);
 }
