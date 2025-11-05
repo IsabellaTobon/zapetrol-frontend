@@ -1,4 +1,3 @@
-// src/lib/api.ts
 import axios from "axios";
 
 export const api = axios.create({
@@ -19,6 +18,8 @@ api.interceptors.request.use((config) => {
 export type MePayload = {
   sub: number;
   email: string;
+  role: "user" | "admin";
+  name?: string;
   iat: number;
   exp: number;
 };

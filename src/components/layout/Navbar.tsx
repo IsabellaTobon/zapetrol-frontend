@@ -1,4 +1,3 @@
-// Navbar.tsx
 import { useEffect, useState } from 'react';
 import './Navbar.css';
 import { useAuth } from '../../hooks/useAuth';
@@ -33,6 +32,9 @@ function ThemeToggle() {
 export default function Navbar({ onOpenAuthModal }: NavbarProps) {
   const { user, logout } = useAuth();
 
+  // Muestra el botón solo si el usuario existe y tiene role admin
+  const isAdmin = user?.role === 'admin';
+
   const shortName = user
     ? (user.email?.split('@')[0] || 'usuario')
     : null;
@@ -50,7 +52,13 @@ export default function Navbar({ onOpenAuthModal }: NavbarProps) {
           <span className="brand-text">Zapetrol</span>
         </a>
 
-        <nav className="nav-links" aria-label="Principal" />
+        <nav className="nav-links" aria-label="Principal">
+          {isAdmin && (
+            <a href="/admin" className="btn btn-outline">
+              Panel de Admin
+            </a>
+          )}
+        </nav>
 
         <div className="nav-actions">
           <ThemeToggle />

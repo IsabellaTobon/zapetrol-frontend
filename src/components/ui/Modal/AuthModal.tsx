@@ -55,7 +55,6 @@ export default function AuthModal({ initialMode = 'login', onClose }: AuthModalP
           password,
         });
 
-        // ✅ Mantén el modal abierto y cambia a la pestaña Login
         toast.success('Registro exitoso. Inicia sesión para continuar 🎉');
         setMode('login');
         setFormData(prev => ({ ...prev, password: '', confirmPassword: '' }));
@@ -65,7 +64,7 @@ export default function AuthModal({ initialMode = 'login', onClose }: AuthModalP
       // LOGIN
       await doLogin({ email, password });
       toast.success('Inicio de sesión correcto 👋');
-      onClose?.(); // ✅ cierra el modal tras loguear
+      onClose?.(); // Cierra el modal tras loguear
     } catch (err: any) {
       toast.error(
         err?.response?.data?.message ??
