@@ -1,14 +1,18 @@
 import "./StationCard.css";
 import type { StationDetails } from "../../lib/api";
 
+const FUELS = [
+  { key: 'Gasoline95', label: '⛽ Gasolina 95' },
+  { key: 'Gasoline98', label: '⛽ Gasolina 98' },
+  { key: 'Diesel', label: '🚛 Diesel' },
+] as const;
+
 export default function StationCard({ station }: { station: StationDetails }) {
   return (
     <div className="station-card">
       <div className="station-header">
         <h3 className="station-name">{station.stationName}</h3>
-        <div className="station-meta">
-          <span className="station-brand">{station.brand}</span>
-        </div>
+        <span className="station-brand">{station.brand}</span>
       </div>
 
       <div className="station-info">
@@ -29,18 +33,14 @@ export default function StationCard({ station }: { station: StationDetails }) {
       </div>
 
       <div className="fuel-prices">
-        <div className="fuel-item">
-          <span className="fuel-type">⛽ Gasolina 95</span>
-          <span className="price">{station.Gasoline95?.toFixed(3) ?? 'N/D'} €</span>
-        </div>
-        <div className="fuel-item">
-          <span className="fuel-type">⛽ Gasolina 98</span>
-          <span className="price">{station.Gasoline98?.toFixed(3) ?? 'N/D'} €</span>
-        </div>
-        <div className="fuel-item">
-          <span className="fuel-type">🚛 Diesel</span>
-          <span className="price">{station.Diesel?.toFixed(3) ?? 'N/D'} €</span>
-        </div>
+        {FUELS.map(({ key, label }) => (
+          <div key={key} className="fuel-item">
+            <span className="fuel-type">{label}</span>
+            <span className="price">
+              {station[key]?.toFixed(3) ?? 'N/D'} €
+            </span>
+          </div>
+        ))}
       </div>
     </div>
   );

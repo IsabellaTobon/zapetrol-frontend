@@ -114,6 +114,25 @@ export type StationDetails = {
   brand: string;
 };
 
+export type StationByMunicipality = {
+  stationId: number;
+  name: string;
+  address: string;
+  municipalityId: number;
+  latitude: number;
+  longitude: number;
+};
+
+export type StationInRadius = {
+  id: string;
+  stationId?: number;
+  name: string;
+  coordinates: { type: string; coordinates: number[] };
+  distance: number;
+  province: string;
+  locality: string;
+};
+
 export async function getStationDetailsAPI(stationId: number) {
   const { data } = await api.get(`/estaciones/detalles/${stationId}`);
   return data;

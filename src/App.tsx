@@ -11,23 +11,49 @@ import Home from './pages/Home'
 import AdminPanel from './pages/AdminPanel'
 import ProtectedRoute from './components/ProtectedRoute'
 import StationCard from './components/stations/StationCard'
-import { getStationDetailsAPI } from './lib/api'
+import { getStationsInRadiusAPI, getStationDetailsAPI, type StationDetails, type StationInRadius } from './lib/api'
 
 function AppContent() {
   const [showAuthModal, setShowAuthModal] = useState(false);
-  const [stationData, setStationData] = useState(null);
+  const [stations, setStations] = useState<StationDetails[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getStationDetailsAPI(1)
-      .then(data => setStationData(data))
-      .catch(err => console.error('Error cargando estación:', err));
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          const { latitude, longitude } = position.coords;
+          const nearbyStations = await getStationsInRadiusAPI(latitude, longitude, 5000, 1, 6);
+          const detailedStations = await Promise.all(
+            nearbyStations
+              .filter((station: StationInRadius) => station.stationId) // Filtrar estaciones sin ID
+              .map((station: StationInRadius) => getStationDetailsAPI(station.stationId!))
+          );
+          setStations(detailedStations);
+        } catch (err) {
+          console.error('Error cargando estaciones:', err);
+        } finally {
+          setLoading(false);
+        }
+      },
+      (err) => {
+        console.error('Error obteniendo ubicación:', err);
+        setLoading(false);
+      }
+    );
   }, []);
 
   return (
     <>
       <Navbar onOpenAuthModal={() => setShowAuthModal(true)} />
       <main>
-        {stationData && <StationCard station={stationData} />}
+        {loading && <p>Cargando estaciones cercanas...</p>}
+        {!loading && stations.length === 0 && <p>No se encontraron estaciones cercanas</p>}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem', padding: '2rem' }}>
+          {stations.map((station) => (
+            <StationCard key={station.stationId} station={station} />
+          ))}
+        </div>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route

@@ -27,12 +27,6 @@
   color: var(--text-100);
 }
 
-.station-meta {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
 .station-brand {
   background: linear-gradient(135deg, var(--brand), var(--brand-2));
   color: white;
