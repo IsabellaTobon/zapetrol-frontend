@@ -83,3 +83,73 @@ export async function updateUserAPI(id: number, input: UpdateUserDto) {
 export async function deleteUserAPI(id: number) {
   await api.delete(`/admin/users/${id}`);
 }
+
+// === STATION ENDPOINTS ===
+
+export type StationDetails = {
+  stationId: number;
+  stationName: string;
+  longitude: number;
+  latitude: number;
+  side: string;
+  postalCode: string;
+  address: string;
+  openingHours: string;
+  saleType: string;
+  municipalityId: number;
+  lastUpdate: string;
+  locality: string;
+  Gasoline95?: number;
+  Gasoline95_avg?: number;
+  Gasoline98?: number;
+  Gasoline98_avg?: number;
+  Diesel?: number;
+  Diesel_avg?: number;
+  DieselPremium?: number;
+  DieselPremium_avg?: number;
+  DieselB_avg?: number;
+  LPG_avg?: number;
+  province: string;
+  provinceDistrict: string;
+  brand: string;
+};
+
+export async function getStationDetailsAPI(stationId: number) {
+  const { data } = await api.get(`/estaciones/detalles/${stationId}`);
+  return data;
+}
+
+export async function getStationHistoryAPI(
+  stationId: number,
+  start?: string,
+  end?: string
+) {
+  const { data } = await api.get(`/estaciones/historico/${stationId}`, {
+    params: { inicio: start, fin: end },
+  });
+  return data;
+}
+
+export async function getStationsByMunicipalityAPI(municipalityId: number) {
+  const { data } = await api.get(`/estaciones/municipio/${municipalityId}`);
+  return data;
+}
+
+export async function getStationsInRadiusAPI(
+  latitude: number,
+  longitude: number,
+  radius: number,
+  page?: number,
+  limit?: number
+) {
+  const { data } = await api.get(`/estaciones/radio`, {
+    params: {
+      latitud: latitude,
+      longitud: longitude,
+      radio: radius,
+      page,
+      limit,
+    },
+  });
+  return data;
+}

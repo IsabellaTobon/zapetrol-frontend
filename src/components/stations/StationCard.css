@@ -1,0 +1,116 @@
+.station-card {
+  background: var(--bg-800);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  border: 1px solid var(--stroke);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.station-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.station-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--stroke);
+}
+
+.station-name {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-100);
+}
+
+.station-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.station-brand {
+  background: linear-gradient(135deg, var(--brand), var(--brand-2));
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.station-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.location,
+.schedule {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.location .icon,
+.schedule .icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.location div {
+  flex: 1;
+}
+
+.address {
+  margin: 0;
+  color: var(--text-300);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.city {
+  margin: 0.25rem 0 0 0;
+  color: var(--text-500);
+  font-size: 0.85rem;
+}
+
+.schedule p {
+  margin: 0;
+  color: var(--text-500);
+  font-size: 0.85rem;
+}
+
+.fuel-prices {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.fuel-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background: var(--bg-850);
+  border-radius: var(--radius);
+  border: 1px solid var(--stroke);
+}
+
+.fuel-type {
+  font-weight: 500;
+  color: var(--text-300);
+  font-size: 0.9rem;
+}
+
+.price {
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--brand), var(--brand-2));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 1.1rem;
+}
