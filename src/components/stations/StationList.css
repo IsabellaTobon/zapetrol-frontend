@@ -20,6 +20,11 @@
   font-size: 0.95rem;
 }
 
+.filtered-count {
+  color: #007bff;
+  font-weight: 600;
+}
+
 .station-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -80,6 +85,25 @@
 .loading-message p {
   font-size: 1.1rem;
   margin: 0;
+}
+
+.reset-filters-btn {
+  margin-top: 1rem;
+  padding: 0.75rem 1.5rem;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.reset-filters-btn:hover {
+  background: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
 }
 
 /* Responsive */
