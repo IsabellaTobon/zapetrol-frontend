@@ -9,19 +9,35 @@ interface MapViewProps {
   userLocation?: { latitude: number; longitude: number };
 }
 
+// Constantes
+const DEFAULT_CENTER = { longitude: -3.7038, latitude: 40.4168 }; // Madrid
+const CLUSTER_THRESHOLD = 0.001; // ~100m
+const PRICE_COLORS = {
+  CHEAP: '#22c55e',    // Verde
+  NORMAL: '#eab308',   // Amarillo
+  EXPENSIVE: '#ef4444', // Rojo
+  DEFAULT: '#6366f1',  // Azul
+};
+const PRICE_THRESHOLD = 3; // % diferencia para considerar normal
+
+const LEGEND_ITEMS = [
+  { color: PRICE_COLORS.CHEAP, label: 'Barato (por debajo de la media)' },
+  { color: PRICE_COLORS.NORMAL, label: 'Normal (±3% de la media)' },
+  { color: PRICE_COLORS.EXPENSIVE, label: 'Caro (por encima de la media)' },
+];
+
 export default function MapView({ stations, userLocation }: MapViewProps) {
   const [popupInfo, setPopupInfo] = useState<StationDetails | null>(null);
   const [viewState, setViewState] = useState({
-    longitude: userLocation?.longitude || -3.7038,
-    latitude: userLocation?.latitude || 40.4168,
+    longitude: userLocation?.longitude || DEFAULT_CENTER.longitude,
+    latitude: userLocation?.latitude || DEFAULT_CENTER.latitude,
     zoom: userLocation ? 12 : 6,
   });
 
   const mapboxToken = import.meta.env.VITE_MAPBOX_TOKEN;
 
-  // Agrupar estaciones muy cercanas para evitar superposición
+  // Agrupar estaciones cercanas para evitar superposición
   const displayStations = useMemo(() => {
-    const CLUSTER_THRESHOLD = 0.001; // ~100m
     const clustered: StationDetails[] = [];
     const processed = new Set<number>();
 
@@ -42,24 +58,22 @@ export default function MapView({ stations, userLocation }: MapViewProps) {
     return clustered;
   }, [stations]);
 
+  const getPriceColor = useCallback((station: StationDetails): string => {
+    const price = station.Gasoline95;
+    const avg = station.Gasoline95_avg;
+
+    if (!price || !avg) return PRICE_COLORS.DEFAULT;
+
+    const diffPercent = ((price - avg) / avg) * 100;
+
+    if (diffPercent < 0) return PRICE_COLORS.CHEAP;
+    if (diffPercent < PRICE_THRESHOLD) return PRICE_COLORS.NORMAL;
+    return PRICE_COLORS.EXPENSIVE;
+  }, []);
+
   const handleMarkerClick = useCallback((station: StationDetails) => {
     setPopupInfo(station);
   }, []);
-
-  const getPriceColor = (station: StationDetails): string => {
-    // Colorear por precio de Gasolina 95 (más común)
-    const price = station.Gasoline95;
-    if (!price) return '#6366f1'; // Azul por defecto
-
-    const avg = station.Gasoline95_avg;
-    if (!avg) return '#6366f1';
-
-    const diff = ((price - avg) / avg) * 100;
-
-    if (diff < 0) return '#22c55e';
-    if (diff < 3) return '#eab308';
-    return '#ef4444';
-  };
 
   if (!mapboxToken) {
     return (
@@ -150,44 +164,20 @@ export default function MapView({ stations, userLocation }: MapViewProps) {
 
               <div className="station-popup-prices">
                 <h4>Precios</h4>
-                {popupInfo.Gasoline95 && (
-                  <div className="price-row">
-                    <span className="fuel-type">Gasolina 95</span>
-                    <span className="fuel-price">{popupInfo.Gasoline95.toFixed(3)}€</span>
-                    {popupInfo.Gasoline95_avg && (
-                      <span className="fuel-avg">
-                        (media: {popupInfo.Gasoline95_avg.toFixed(3)}€)
-                      </span>
-                    )}
-                  </div>
-                )}
-                {popupInfo.Gasoline98 && (
-                  <div className="price-row">
-                    <span className="fuel-type">Gasolina 98</span>
-                    <span className="fuel-price">{popupInfo.Gasoline98.toFixed(3)}€</span>
-                    {popupInfo.Gasoline98_avg && (
-                      <span className="fuel-avg">
-                        (media: {popupInfo.Gasoline98_avg.toFixed(3)}€)
-                      </span>
-                    )}
-                  </div>
-                )}
-                {popupInfo.Diesel && (
-                  <div className="price-row">
-                    <span className="fuel-type">Diesel</span>
-                    <span className="fuel-price">{popupInfo.Diesel.toFixed(3)}€</span>
-                    {popupInfo.Diesel_avg && (
-                      <span className="fuel-avg">
-                        (media: {popupInfo.Diesel_avg.toFixed(3)}€)
-                      </span>
-                    )}
-                  </div>
-                )}
-                {popupInfo.DieselPremium && (
-                  <div className="price-row">
-                    <span className="fuel-type">Diesel Premium</span>
-                    <span className="fuel-price">{popupInfo.DieselPremium.toFixed(3)}€</span>
-                  </div>
+                {[
+                  { type: 'Gasolina 95', price: popupInfo.Gasoline95, avg: popupInfo.Gasoline95_avg },
+                  { type: 'Gasolina 98', price: popupInfo.Gasoline98, avg: popupInfo.Gasoline98_avg },
+                  { type: 'Diesel', price: popupInfo.Diesel, avg: popupInfo.Diesel_avg },
+                  { type: 'Diesel Premium', price: popupInfo.DieselPremium, avg: popupInfo.DieselPremium_avg },
+                ].map(
+                  ({ type, price, avg }) =>
+                    price && (
+                      <div key={type} className="price-row">
+                        <span className="fuel-type">{type}</span>
+                        <span className="fuel-price">{price.toFixed(3)}€</span>
+                        {avg && <span className="fuel-avg">(media: {avg.toFixed(3)}€)</span>}
+                      </div>
+                    )
                 )}
               </div>
 
@@ -205,18 +195,12 @@ export default function MapView({ stations, userLocation }: MapViewProps) {
       <div className="map-legend">
         <h4>Leyenda de precios (Gasolina 95)</h4>
         <div className="legend-items">
-          <div className="legend-item">
-            <span className="legend-color" style={{ backgroundColor: '#22c55e' }}></span>
-            <span>Barato (por debajo de la media)</span>
-          </div>
-          <div className="legend-item">
-            <span className="legend-color" style={{ backgroundColor: '#eab308' }}></span>
-            <span>Normal (±3% de la media)</span>
-          </div>
-          <div className="legend-item">
-            <span className="legend-color" style={{ backgroundColor: '#ef4444' }}></span>
-            <span>Caro (por encima de la media)</span>
-          </div>
+          {LEGEND_ITEMS.map(({ color, label }) => (
+            <div key={label} className="legend-item">
+              <span className="legend-color" style={{ backgroundColor: color }} />
+              <span>{label}</span>
+            </div>
+          ))}
         </div>
       </div>
     </div>

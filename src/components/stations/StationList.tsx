@@ -80,8 +80,6 @@ export default function StationList({
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    // Scroll suave al inicio de la lista
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleResetFilters = () => {
