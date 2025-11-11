@@ -1,11 +1,6 @@
 import { useState, useEffect } from "react";
 import StationList from "../components/stations/StationList";
-import {
-  getStationsInRadiusAPI,
-  getStationDetailsAPI,
-  type StationDetails,
-  type StationInRadius,
-} from "../lib/api";
+import { getStationsInRadiusWithDetailsAPI, type StationDetails } from "../lib/api";
 
 const RADIUS_KM = 5000;
 const MAX_STATIONS = 30;
@@ -18,14 +13,14 @@ export default function Home() {
   useEffect(() => {
     const loadNearbyStations = async (latitude: number, longitude: number) => {
       try {
-        const nearbyStations = await getStationsInRadiusAPI(latitude, longitude, RADIUS_KM, 1, MAX_STATIONS);
-
-        const validStations = nearbyStations.filter((station: StationInRadius) => station.stationId);
-        const detailedStations = await Promise.all(
-          validStations.map((station: StationInRadius) => getStationDetailsAPI(station.stationId!))
+        const stations = await getStationsInRadiusWithDetailsAPI(
+          latitude,
+          longitude,
+          RADIUS_KM,
+          1,
+          MAX_STATIONS
         );
-
-        setStations(detailedStations);
+        setStations(stations);
       } catch (err) {
         const message = err instanceof Error ? err.message : "Error desconocido";
         setError(`Error cargando estaciones: ${message}`);
@@ -46,8 +41,11 @@ export default function Home() {
 
   if (error) {
     return (
-      <div className="error-container" style={{ padding: "2rem", textAlign: "center" }}>
-        <p style={{ color: "var(--error-color, #f44336)" }}>{error}</p>
+      <div className="station-list-container">
+        <div className="error-message">
+          <span className="error-icon">⚠️</span>
+          <p style={{ color: "var(--error-color, #f44336)" }}>{error}</p>
+        </div>
       </div>
     );
   }

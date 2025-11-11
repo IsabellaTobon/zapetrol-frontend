@@ -1,7 +1,8 @@
 .station-list-container {
   max-width: var(--container);
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: 3rem 1rem;
+  min-height: calc(100vh - 200px);
 }
 
 .station-list-header {
@@ -47,13 +48,26 @@
 }
 
 .loading-message,
-.empty-message {
+.empty-message,
+.error-message {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 300px;
   color: var(--text-500);
+}
+
+.error-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.8;
+}
+
+.error-message p {
+  font-size: 1.1rem;
+  margin: 0;
+  text-align: center;
 }
 
 .spinner {

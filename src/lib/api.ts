@@ -172,3 +172,22 @@ export async function getStationsInRadiusAPI(
   });
   return data;
 }
+
+export async function getStationsInRadiusWithDetailsAPI(
+  latitude: number,
+  longitude: number,
+  radius: number,
+  page?: number,
+  limit?: number
+): Promise<StationDetails[]> {
+  const { data } = await api.get(`/estaciones/radio/detalles`, {
+    params: {
+      latitud: latitude,
+      longitud: longitude,
+      radio: radius,
+      page,
+      limit,
+    },
+  });
+  return data;
+}

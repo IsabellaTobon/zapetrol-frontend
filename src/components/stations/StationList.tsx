@@ -45,16 +45,16 @@ export default function StationList({
     if (sortBy !== 'none') {
       result.sort((a, b) => {
         if (sortBy === 'price-asc' || sortBy === 'price-desc') {
-          const priceA = selectedFuel !== 'all' ? (a[selectedFuel] ?? Infinity) : Math.min(
-            a.Gasoline95 ?? Infinity,
-            a.Gasoline98 ?? Infinity,
-            a.Diesel ?? Infinity
-          );
-          const priceB = selectedFuel !== 'all' ? (b[selectedFuel] ?? Infinity) : Math.min(
-            b.Gasoline95 ?? Infinity,
-            b.Gasoline98 ?? Infinity,
-            b.Diesel ?? Infinity
-          );
+          // Si hay un combustible seleccionado, ordenar por ese combustible
+          if (selectedFuel !== 'all') {
+            const priceA = a[selectedFuel] ?? Infinity;
+            const priceB = b[selectedFuel] ?? Infinity;
+            return sortBy === 'price-asc' ? priceA - priceB : priceB - priceA;
+          }
+
+          // Si no hay filtro de combustible, ordenar por Gasolina 95 (el más común)
+          const priceA = a.Gasoline95 ?? Infinity;
+          const priceB = b.Gasoline95 ?? Infinity;
           return sortBy === 'price-asc' ? priceA - priceB : priceB - priceA;
         } else if (sortBy === 'name-asc') {
           return a.stationName.localeCompare(b.stationName);
