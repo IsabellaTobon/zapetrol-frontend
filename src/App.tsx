@@ -10,7 +10,7 @@ import { AuthProvider } from './contexts/AuthContext'
 import Home from './pages/Home'
 import AdminPanel from './pages/AdminPanel'
 import ProtectedRoute from './components/ProtectedRoute'
-import StationCard from './components/stations/StationCard'
+import StationList from './components/stations/StationList'
 import { getStationsInRadiusAPI, getStationDetailsAPI, type StationDetails, type StationInRadius } from './lib/api'
 
 function AppContent() {
@@ -47,13 +47,7 @@ function AppContent() {
     <>
       <Navbar onOpenAuthModal={() => setShowAuthModal(true)} />
       <main>
-        {loading && <p>Cargando estaciones cercanas...</p>}
-        {!loading && stations.length === 0 && <p>No se encontraron estaciones cercanas</p>}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem', padding: '2rem' }}>
-          {stations.map((station) => (
-            <StationCard key={station.stationId} station={station} />
-          ))}
-        </div>
+        <StationList stations={stations} loading={loading} itemsPerPage={8} />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route
