@@ -1,7 +1,7 @@
 .station-list-container {
-  max-width: 1400px;
+  max-width: var(--container);
   margin: 0 auto;
-  padding: 2rem;
+  padding: 2rem 1rem;
 }
 
 .station-list-header {
@@ -11,17 +11,18 @@
 
 .station-list-header h2 {
   font-size: 2rem;
-  color: #333;
+  color: var(--text-100);
   margin-bottom: 0.5rem;
+  font-weight: 700;
 }
 
 .station-count {
-  color: #666;
+  color: var(--text-500);
   font-size: 0.95rem;
 }
 
 .filtered-count {
-  color: #007bff;
+  color: var(--brand);
   font-weight: 600;
 }
 
@@ -52,14 +53,14 @@
   align-items: center;
   justify-content: center;
   min-height: 300px;
-  color: #666;
+  color: var(--text-500);
 }
 
 .spinner {
   width: 50px;
   height: 50px;
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #007bff;
+  border: 4px solid var(--stroke);
+  border-top: 4px solid var(--brand);
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 1rem;
@@ -85,39 +86,59 @@
 .loading-message p {
   font-size: 1.1rem;
   margin: 0;
+  color: var(--text-300);
 }
 
 .reset-filters-btn {
   margin-top: 1rem;
   padding: 0.75rem 1.5rem;
-  background: #007bff;
+  background: linear-gradient(135deg, var(--brand), var(--brand-2));
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius);
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all var(--transition);
 }
 
 .reset-filters-btn:hover {
-  background: #0056b3;
+  opacity: 0.9;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+  box-shadow: var(--shadow-lg);
 }
 
 /* Responsive */
 @media (max-width: 768px) {
   .station-list-container {
-    padding: 1rem;
+    padding: 1rem 0.5rem;
   }
 
   .station-list-header h2 {
     font-size: 1.5rem;
   }
 
+  .station-count {
+    font-size: 0.85rem;
+  }
+
   .station-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .station-list-header h2 {
+    font-size: 1.25rem;
+  }
+
+  .empty-icon {
+    font-size: 3rem;
+  }
+
+  .empty-message p,
+  .loading-message p {
+    font-size: 1rem;
   }
 }

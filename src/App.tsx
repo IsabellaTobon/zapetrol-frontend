@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './App.css'
 import './styles/theme.css'
@@ -10,44 +10,14 @@ import { AuthProvider } from './contexts/AuthContext'
 import Home from './pages/Home'
 import AdminPanel from './pages/AdminPanel'
 import ProtectedRoute from './components/ProtectedRoute'
-import StationList from './components/stations/StationList'
-import { getStationsInRadiusAPI, getStationDetailsAPI, type StationDetails, type StationInRadius } from './lib/api'
 
 function AppContent() {
   const [showAuthModal, setShowAuthModal] = useState(false);
-  const [stations, setStations] = useState<StationDetails[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        try {
-          const { latitude, longitude } = position.coords;
-          const nearbyStations = await getStationsInRadiusAPI(latitude, longitude, 5000, 1, 6);
-          const detailedStations = await Promise.all(
-            nearbyStations
-              .filter((station: StationInRadius) => station.stationId) // Filtrar estaciones sin ID
-              .map((station: StationInRadius) => getStationDetailsAPI(station.stationId!))
-          );
-          setStations(detailedStations);
-        } catch (err) {
-          console.error('Error cargando estaciones:', err);
-        } finally {
-          setLoading(false);
-        }
-      },
-      (err) => {
-        console.error('Error obteniendo ubicación:', err);
-        setLoading(false);
-      }
-    );
-  }, []);
 
   return (
     <>
       <Navbar onOpenAuthModal={() => setShowAuthModal(true)} />
       <main>
-        <StationList stations={stations} loading={loading} itemsPerPage={8} />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route

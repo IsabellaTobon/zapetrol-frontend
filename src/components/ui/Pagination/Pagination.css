@@ -11,26 +11,26 @@
   min-width: 2.5rem;
   height: 2.5rem;
   padding: 0.5rem;
-  border: 1px solid #ddd;
-  background: white;
-  border-radius: 6px;
+  border: 1px solid var(--stroke);
+  background: var(--bg-800);
+  border-radius: var(--radius);
   cursor: pointer;
   font-size: 0.95rem;
   font-weight: 500;
-  transition: all 0.2s ease;
-  color: #333;
+  transition: all var(--transition);
+  color: var(--text-300);
 }
 
 .pagination-btn:hover:not(:disabled) {
-  background: #f0f0f0;
-  border-color: #999;
+  background: var(--bg-850);
+  border-color: var(--brand);
   transform: translateY(-1px);
 }
 
 .pagination-btn.active {
-  background: #007bff;
+  background: linear-gradient(135deg, var(--brand), var(--brand-2));
   color: white;
-  border-color: #007bff;
+  border-color: var(--brand);
 }
 
 .pagination-btn:disabled {
@@ -40,7 +40,7 @@
 
 .pagination-ellipsis {
   padding: 0.5rem;
-  color: #999;
+  color: var(--text-700);
   font-weight: 500;
 }
 
@@ -48,11 +48,24 @@
 @media (max-width: 768px) {
   .pagination {
     gap: 0.25rem;
+    padding: 0.5rem;
   }
 
   .pagination-btn {
     min-width: 2rem;
     height: 2rem;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .pagination-btn {
+    min-width: 1.75rem;
+    height: 1.75rem;
+    font-size: 0.8rem;
+  }
+
+  .pagination-ellipsis {
     font-size: 0.85rem;
   }
 }
