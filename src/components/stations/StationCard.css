@@ -47,6 +47,14 @@
   margin-bottom: 1rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid var(--stroke-strong);
+  gap: 1rem;
+}
+
+.station-title-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .station-name {
@@ -66,6 +74,26 @@
   font-weight: 500;
   box-shadow: 0 0 15px rgba(138, 95, 232, 0.4);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  width: fit-content;
+}
+
+.favorite-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  line-height: 1;
+  transition: transform var(--transition);
+  flex-shrink: 0;
+}
+
+.favorite-btn:hover {
+  transform: scale(1.2);
+}
+
+.favorite-btn:active {
+  transform: scale(0.9);
 }
 
 .station-info {

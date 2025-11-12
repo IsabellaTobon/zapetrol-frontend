@@ -54,6 +54,11 @@ export default function Navbar({ onOpenAuthModal }: NavbarProps) {
         </Link>
 
         <nav className="nav-links" aria-label="Principal">
+          {user && (
+            <Link to="/favoritos" className="btn btn-outline">
+              ❤️ Favoritos
+            </Link>
+          )}
           {isAdmin && (
             <Link to="/admin" className="btn btn-outline">
               Panel de Admin

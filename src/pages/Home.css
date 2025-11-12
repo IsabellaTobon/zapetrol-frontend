@@ -9,10 +9,9 @@
   position: relative;
   text-align: center;
   padding: 4rem 1rem 5rem;
-  background: linear-gradient(180deg, 
-    var(--bg-850) 0%, 
-    var(--bg-900) 100%
-  );
+  background: linear-gradient(180deg,
+      var(--bg-850) 0%,
+      var(--bg-900) 100%);
   border-bottom: 1px solid var(--stroke);
   overflow: hidden;
 }
@@ -25,19 +24,21 @@
   transform: translateX(-50%);
   width: 800px;
   height: 800px;
-  background: radial-gradient(circle, 
-    color-mix(in srgb, var(--brand) 15%, transparent) 0%, 
-    transparent 70%
-  );
+  background: radial-gradient(circle,
+      color-mix(in srgb, var(--brand) 15%, transparent) 0%,
+      transparent 70%);
   pointer-events: none;
   animation: pulse-glow 4s ease-in-out infinite;
 }
 
 @keyframes pulse-glow {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 0.3;
     transform: translateX(-50%) scale(1);
   }
+
   50% {
     opacity: 0.5;
     transform: translateX(-50%) scale(1.1);

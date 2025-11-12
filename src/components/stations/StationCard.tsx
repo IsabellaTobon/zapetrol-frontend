@@ -7,12 +7,36 @@ const FUELS = [
   { key: 'Diesel', label: '🚛 Diesel' },
 ] as const;
 
-export default function StationCard({ station }: { station: StationDetails }) {
+interface StationCardProps {
+  station: StationDetails;
+  isFavorite?: boolean;
+  onToggleFavorite?: (stationId: number) => void;
+  showFavoriteButton?: boolean;
+}
+
+export default function StationCard({
+  station,
+  isFavorite = false,
+  onToggleFavorite,
+  showFavoriteButton = false
+}: StationCardProps) {
   return (
     <div className="station-card">
       <div className="station-header">
-        <h3 className="station-name">{station.stationName}</h3>
-        <span className="station-brand">{station.brand}</span>
+        <div className="station-title-group">
+          <h3 className="station-name">{station.stationName}</h3>
+          <span className="station-brand">{station.brand}</span>
+        </div>
+        {showFavoriteButton && onToggleFavorite && (
+          <button
+            className="favorite-btn"
+            onClick={() => onToggleFavorite(station.stationId)}
+            aria-label={isFavorite ? 'Quitar de favoritos' : 'Añadir a favoritos'}
+            title={isFavorite ? 'Quitar de favoritos' : 'Añadir a favoritos'}
+          >
+            {isFavorite ? '❤️' : '🤍'}
+          </button>
+        )}
       </div>
 
       <div className="station-info">

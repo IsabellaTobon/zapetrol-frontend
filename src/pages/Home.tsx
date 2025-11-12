@@ -67,10 +67,10 @@ export default function Home() {
             <span className="hero-highlight"> cerca de ti</span>
           </h1>
           <p className="hero-description">
-            Compara precios en tiempo real y ahorra en cada repostaje. 
+            Compara precios en tiempo real y ahorra en cada repostaje.
             Más de {stations.length} estaciones disponibles en tu zona.
           </p>
-          
+
           {/* Stats */}
           <div className="hero-stats">
             <div className="stat-item">

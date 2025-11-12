@@ -3,6 +3,7 @@ import StationCard from './StationCard';
 import Pagination from '../ui/Pagination/Pagination';
 import StationFilters, { type FuelType, type SortBy } from './StationFilters';
 import type { StationDetails } from '../../lib/api';
+import { useFavorites } from '../../hooks/useFavorites';
 import './StationList.css';
 
 interface StationListProps {
@@ -20,6 +21,8 @@ export default function StationList({
   const [selectedBrand, setSelectedBrand] = useState<string>('all');
   const [selectedFuel, setSelectedFuel] = useState<FuelType>('all');
   const [sortBy, setSortBy] = useState<SortBy>('none');
+
+  const { isFavorite, toggleFavorite, isAuthenticated } = useFavorites();
 
   // Extraer todas las marcas únicas
   const brands = useMemo(() => {
@@ -145,7 +148,13 @@ export default function StationList({
         <>
           <div className="station-grid">
             {currentStations.map((station) => (
-              <StationCard key={station.stationId} station={station} />
+              <StationCard
+                key={station.stationId}
+                station={station}
+                isFavorite={isFavorite(station.stationId)}
+                onToggleFavorite={toggleFavorite}
+                showFavoriteButton={isAuthenticated}
+              />
             ))}
           </div>
 

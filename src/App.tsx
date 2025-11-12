@@ -9,6 +9,7 @@ import AuthModal from './components/ui/Modal/AuthModal'
 import { AuthProvider } from './contexts/AuthContext'
 import Home from './pages/Home'
 import AdminPanel from './pages/AdminPanel'
+import Favorites from './pages/Favorites'
 import ProtectedRoute from './components/ProtectedRoute'
 
 function AppContent() {
@@ -20,6 +21,7 @@ function AppContent() {
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/favoritos" element={<Favorites />} />
           <Route
             path="/admin"
             element={
