@@ -1,9 +1,12 @@
 import { useState, useEffect, useCallback } from "react";
 import { getFavoritesAPI, toggleFavoriteAPI } from "../lib/api";
 import { useAuthContext } from "./useAuthContext";
+import { useAuthModal } from "./useAuthModal";
+import toast from "react-hot-toast";
 
 export function useFavorites() {
   const { user } = useAuthContext();
+  const { openAuthModal } = useAuthModal();
   const [favorites, setFavorites] = useState<number[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -37,10 +40,15 @@ export function useFavorites() {
         setFavorites(newFavorites);
       } catch (error) {
         console.error("Error toggling favorite:", error);
+        toast.error("Error al actualizar favoritos");
       }
     },
     [user]
   );
+
+  const handleAuthRequired = useCallback(() => {
+    openAuthModal();
+  }, [openAuthModal]);
 
   const isFavorite = useCallback(
     (stationId: number) => {
@@ -55,5 +63,6 @@ export function useFavorites() {
     toggleFavorite,
     isFavorite,
     isAuthenticated: !!user,
+    handleAuthRequired,
   };
 }

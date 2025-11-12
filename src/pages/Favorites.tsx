@@ -81,7 +81,7 @@ export default function Favorites() {
               station={station}
               isFavorite={true}
               onToggleFavorite={toggleFavorite}
-              showFavoriteButton={true}
+              isAuthenticated={isAuthenticated}
             />
           ))}
         </div>

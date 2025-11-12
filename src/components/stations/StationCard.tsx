@@ -11,15 +11,26 @@ interface StationCardProps {
   station: StationDetails;
   isFavorite?: boolean;
   onToggleFavorite?: (stationId: number) => void;
-  showFavoriteButton?: boolean;
+  isAuthenticated?: boolean;
+  onAuthRequired?: () => void;
 }
 
 export default function StationCard({
   station,
   isFavorite = false,
   onToggleFavorite,
-  showFavoriteButton = false
+  isAuthenticated = false,
+  onAuthRequired
 }: StationCardProps) {
+
+  const handleFavoriteClick = () => {
+    if (!isAuthenticated && onAuthRequired) {
+      onAuthRequired();
+    } else if (onToggleFavorite) {
+      onToggleFavorite(station.stationId);
+    }
+  };
+
   return (
     <div className="station-card">
       <div className="station-header">
@@ -27,16 +38,17 @@ export default function StationCard({
           <h3 className="station-name">{station.stationName}</h3>
           <span className="station-brand">{station.brand}</span>
         </div>
-        {showFavoriteButton && onToggleFavorite && (
-          <button
-            className="favorite-btn"
-            onClick={() => onToggleFavorite(station.stationId)}
-            aria-label={isFavorite ? 'Quitar de favoritos' : 'Añadir a favoritos'}
-            title={isFavorite ? 'Quitar de favoritos' : 'Añadir a favoritos'}
-          >
-            {isFavorite ? '❤️' : '🤍'}
-          </button>
-        )}
+        <button
+          className="favorite-btn"
+          onClick={handleFavoriteClick}
+          aria-label={isFavorite ? 'Quitar de favoritos' : 'Añadir a favoritos'}
+          title={isAuthenticated
+            ? (isFavorite ? 'Quitar de favoritos' : 'Añadir a favoritos')
+            : 'Inicia sesión para guardar favoritos'
+          }
+        >
+          {isFavorite ? '❤️' : '🤍'}
+        </button>
       </div>
 
       <div className="station-info">

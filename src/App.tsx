@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './App.css'
 import './styles/theme.css'
@@ -7,17 +6,19 @@ import Footer from './components/layout/Footer'
 import { Toaster } from 'react-hot-toast'
 import AuthModal from './components/ui/Modal/AuthModal'
 import { AuthProvider } from './contexts/AuthContext'
+import { AuthModalProvider } from './contexts/AuthModalContext'
+import { useAuthModal } from './hooks/useAuthModal'
 import Home from './pages/Home'
 import AdminPanel from './pages/AdminPanel'
 import Favorites from './pages/Favorites'
 import ProtectedRoute from './components/ProtectedRoute'
 
 function AppContent() {
-  const [showAuthModal, setShowAuthModal] = useState(false);
+  const { showAuthModal, openAuthModal, closeAuthModal } = useAuthModal();
 
   return (
     <>
-      <Navbar onOpenAuthModal={() => setShowAuthModal(true)} />
+      <Navbar onOpenAuthModal={openAuthModal} />
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -34,7 +35,7 @@ function AppContent() {
       </main>
       <Footer />
 
-      {showAuthModal && <AuthModal onClose={() => setShowAuthModal(false)} />}
+      {showAuthModal && <AuthModal onClose={closeAuthModal} />}
 
       <Toaster position="top-right" toastOptions={{ duration: 2500 }} />
     </>
@@ -45,7 +46,9 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <AppContent />
+        <AuthModalProvider>
+          <AppContent />
+        </AuthModalProvider>
       </AuthProvider>
     </BrowserRouter>
   )

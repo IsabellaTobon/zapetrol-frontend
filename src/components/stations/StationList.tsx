@@ -22,7 +22,7 @@ export default function StationList({
   const [selectedFuel, setSelectedFuel] = useState<FuelType>('all');
   const [sortBy, setSortBy] = useState<SortBy>('none');
 
-  const { isFavorite, toggleFavorite, isAuthenticated } = useFavorites();
+  const { isFavorite, toggleFavorite, isAuthenticated, handleAuthRequired } = useFavorites();
 
   // Extraer todas las marcas únicas
   const brands = useMemo(() => {
@@ -153,7 +153,8 @@ export default function StationList({
                 station={station}
                 isFavorite={isFavorite(station.stationId)}
                 onToggleFavorite={toggleFavorite}
-                showFavoriteButton={isAuthenticated}
+                isAuthenticated={isAuthenticated}
+                onAuthRequired={handleAuthRequired}
               />
             ))}
           </div>
