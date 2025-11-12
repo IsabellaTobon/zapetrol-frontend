@@ -11,25 +11,13 @@ interface StationCardProps {
   station: StationDetails;
   isFavorite?: boolean;
   onToggleFavorite?: (stationId: number) => void;
-  isAuthenticated?: boolean;
-  onAuthRequired?: () => void;
 }
 
 export default function StationCard({
   station,
   isFavorite = false,
   onToggleFavorite,
-  isAuthenticated = false,
-  onAuthRequired
 }: StationCardProps) {
-
-  const handleFavoriteClick = () => {
-    if (!isAuthenticated && onAuthRequired) {
-      onAuthRequired();
-    } else if (onToggleFavorite) {
-      onToggleFavorite(station.stationId);
-    }
-  };
 
   return (
     <div className="station-card">
@@ -40,12 +28,9 @@ export default function StationCard({
         </div>
         <button
           className="favorite-btn"
-          onClick={handleFavoriteClick}
+          onClick={() => onToggleFavorite?.(station.stationId)}
           aria-label={isFavorite ? 'Quitar de favoritos' : 'Añadir a favoritos'}
-          title={isAuthenticated
-            ? (isFavorite ? 'Quitar de favoritos' : 'Añadir a favoritos')
-            : 'Inicia sesión para guardar favoritos'
-          }
+          title={isFavorite ? 'Quitar de favoritos' : 'Añadir a favoritos'}
         >
           {isFavorite ? '❤️' : '🤍'}
         </button>

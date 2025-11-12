@@ -33,7 +33,10 @@ export function useFavorites() {
 
   const toggleFavorite = useCallback(
     async (stationId: number) => {
-      if (!user) return;
+      if (!user) {
+        openAuthModal();
+        return;
+      }
 
       try {
         const { favorites: newFavorites } = await toggleFavoriteAPI(stationId);
@@ -43,12 +46,8 @@ export function useFavorites() {
         toast.error("Error al actualizar favoritos");
       }
     },
-    [user]
+    [user, openAuthModal]
   );
-
-  const handleAuthRequired = useCallback(() => {
-    openAuthModal();
-  }, [openAuthModal]);
 
   const isFavorite = useCallback(
     (stationId: number) => {
@@ -63,6 +62,5 @@ export function useFavorites() {
     toggleFavorite,
     isFavorite,
     isAuthenticated: !!user,
-    handleAuthRequired,
   };
 }
