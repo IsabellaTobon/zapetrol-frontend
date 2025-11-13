@@ -6,6 +6,7 @@ interface AuthModalContextType {
   closeAuthModal: () => void;
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const AuthModalContext = createContext<AuthModalContextType | undefined>(undefined);
 
 export function AuthModalProvider({ children }: { children: ReactNode }) {
