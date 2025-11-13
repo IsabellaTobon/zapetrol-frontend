@@ -1,6 +1,6 @@
 .station-card {
   position: relative;
-  background: linear-gradient(135deg, var(--bg-800) 0%, var(--bg-850) 100%);
+  background: var(--gradient-bg);
   border-radius: var(--radius-lg);
   padding: 1.5rem;
   border: 1px solid var(--stroke-strong);
@@ -17,7 +17,7 @@
   bottom: 0;
   border-radius: var(--radius-lg);
   padding: 1px;
-  background: linear-gradient(135deg, var(--brand), var(--brand-2));
+  background: var(--gradient-brand);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
@@ -66,7 +66,7 @@
 }
 
 .station-brand {
-  background: linear-gradient(135deg, var(--brand), var(--brand-2));
+  background: var(--gradient-brand);
   color: white;
   padding: 0.25rem 0.75rem;
   border-radius: var(--radius);
@@ -149,7 +149,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 0.75rem;
-  background: linear-gradient(135deg, var(--bg-850) 0%, var(--bg-800) 100%);
+  background: var(--gradient-bg);
   border-radius: var(--radius);
   border: 1px solid var(--stroke);
   transition: all var(--transition);
@@ -157,7 +157,7 @@
 
 .fuel-item:hover {
   border-color: var(--brand);
-  background: linear-gradient(135deg, var(--bg-800) 0%, var(--bg-850) 100%);
+  background: var(--gradient-bg);
   box-shadow: 0 0 15px rgba(138, 95, 232, 0.15);
 }
 
@@ -169,7 +169,7 @@
 
 .price {
   font-weight: 700;
-  background: linear-gradient(135deg, var(--brand), var(--brand-2));
+  background: var(--gradient-text);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

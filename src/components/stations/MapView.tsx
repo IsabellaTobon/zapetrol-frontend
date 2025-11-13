@@ -91,116 +91,121 @@ export default function MapView({ stations, userLocation }: MapViewProps) {
 
   return (
     <div className="map-container">
-      <Map
-        {...viewState}
-        onMove={(evt) => setViewState(evt.viewState)}
-        mapStyle="mapbox://styles/mapbox/streets-v12"
-        mapboxAccessToken={mapboxToken}
-        style={{ width: '100%', height: '100%' }}
-      >
-        <NavigationControl position="top-right" />
-        <GeolocateControl
-          position="top-right"
-          trackUserLocation
-          showUserHeading
-        />
+      <div className="map-header">
+        <h2>Mapa de estaciones</h2>
+      </div>
+      <div className="map-wrapper">
+        <Map
+          {...viewState}
+          onMove={(evt) => setViewState(evt.viewState)}
+          mapStyle="mapbox://styles/mapbox/streets-v12"
+          mapboxAccessToken={mapboxToken}
+          style={{ width: '100%', height: '100%' }}
+        >
+          <NavigationControl position="top-right" />
+          <GeolocateControl
+            position="top-right"
+            trackUserLocation
+            showUserHeading
+          />
 
-        {/* Marcador de ubicación del usuario */}
-        {userLocation && (
-          <Marker
-            longitude={userLocation.longitude}
-            latitude={userLocation.latitude}
-            anchor="center"
-          >
-            <div className="user-marker" title="Tu ubicación">
-              <div className="user-marker-pulse"></div>
-              <div className="user-marker-dot"></div>
-            </div>
-          </Marker>
-        )}
-
-        {/* Marcadores de estaciones */}
-        {displayStations.map((station) => (
-          <Marker
-            key={station.stationId}
-            longitude={station.longitude}
-            latitude={station.latitude}
-            anchor="bottom"
-            onClick={(e) => {
-              e.originalEvent.stopPropagation();
-              handleMarkerClick(station);
-            }}
-          >
-            <div
-              className="station-marker"
-              style={{ backgroundColor: getPriceColor(station) }}
-              title={station.stationName}
+          {/* Marcador de ubicación del usuario */}
+          {userLocation && (
+            <Marker
+              longitude={userLocation.longitude}
+              latitude={userLocation.latitude}
+              anchor="center"
             >
-              <span className="station-marker-icon">⛽</span>
-            </div>
-          </Marker>
-        ))}
+              <div className="user-marker" title="Tu ubicación">
+                <div className="user-marker-pulse"></div>
+                <div className="user-marker-dot"></div>
+              </div>
+            </Marker>
+          )}
 
-        {/* Popup con información de la estación */}
-        {popupInfo && (
-          <Popup
-            longitude={popupInfo.longitude}
-            latitude={popupInfo.latitude}
-            anchor="top"
-            onClose={() => setPopupInfo(null)}
-            closeButton={true}
-            closeOnClick={false}
-            className="station-popup"
-          >
-            <div className="station-popup-content">
-              <h3 className="station-popup-title">{popupInfo.stationName}</h3>
-              {popupInfo.brand && (
-                <p className="station-popup-brand">{popupInfo.brand}</p>
-              )}
-              <p className="station-popup-address">{popupInfo.address}</p>
-              <p className="station-popup-locality">
-                {popupInfo.locality}, {popupInfo.province}
-              </p>
+          {/* Marcadores de estaciones */}
+          {displayStations.map((station) => (
+            <Marker
+              key={station.stationId}
+              longitude={station.longitude}
+              latitude={station.latitude}
+              anchor="bottom"
+              onClick={(e) => {
+                e.originalEvent.stopPropagation();
+                handleMarkerClick(station);
+              }}
+            >
+              <div
+                className="station-marker"
+                style={{ backgroundColor: getPriceColor(station) }}
+                title={station.stationName}
+              >
+                <span className="station-marker-icon">⛽</span>
+              </div>
+            </Marker>
+          ))}
 
-              <div className="station-popup-prices">
-                <h4>Precios</h4>
-                {[
-                  { type: 'Gasolina 95', price: popupInfo.Gasoline95, avg: popupInfo.Gasoline95_avg },
-                  { type: 'Gasolina 98', price: popupInfo.Gasoline98, avg: popupInfo.Gasoline98_avg },
-                  { type: 'Diesel', price: popupInfo.Diesel, avg: popupInfo.Diesel_avg },
-                  { type: 'Diesel Premium', price: popupInfo.DieselPremium, avg: popupInfo.DieselPremium_avg },
-                ].map(
-                  ({ type, price, avg }) =>
-                    price && (
-                      <div key={type} className="price-row">
-                        <span className="fuel-type">{type}</span>
-                        <span className="fuel-price">{price.toFixed(3)}€</span>
-                        {avg && <span className="fuel-avg">(media: {avg.toFixed(3)}€)</span>}
-                      </div>
-                    )
+          {/* Popup con información de la estación */}
+          {popupInfo && (
+            <Popup
+              longitude={popupInfo.longitude}
+              latitude={popupInfo.latitude}
+              anchor="top"
+              onClose={() => setPopupInfo(null)}
+              closeButton={true}
+              closeOnClick={false}
+              className="station-popup"
+            >
+              <div className="station-popup-content">
+                <h3 className="station-popup-title">{popupInfo.stationName}</h3>
+                {popupInfo.brand && (
+                  <p className="station-popup-brand">{popupInfo.brand}</p>
+                )}
+                <p className="station-popup-address">{popupInfo.address}</p>
+                <p className="station-popup-locality">
+                  {popupInfo.locality}, {popupInfo.province}
+                </p>
+
+                <div className="station-popup-prices">
+                  <h4>Precios</h4>
+                  {[
+                    { type: 'Gasolina 95', price: popupInfo.Gasoline95, avg: popupInfo.Gasoline95_avg },
+                    { type: 'Gasolina 98', price: popupInfo.Gasoline98, avg: popupInfo.Gasoline98_avg },
+                    { type: 'Diesel', price: popupInfo.Diesel, avg: popupInfo.Diesel_avg },
+                    { type: 'Diesel Premium', price: popupInfo.DieselPremium, avg: popupInfo.DieselPremium_avg },
+                  ].map(
+                    ({ type, price, avg }) =>
+                      price && (
+                        <div key={type} className="price-row">
+                          <span className="fuel-type">{type}</span>
+                          <span className="fuel-price">{price.toFixed(3)}€</span>
+                          {avg && <span className="fuel-avg">(media: {avg.toFixed(3)}€)</span>}
+                        </div>
+                      )
+                  )}
+                </div>
+
+                {popupInfo.openingHours && (
+                  <p className="station-popup-hours">
+                    <strong>Horario:</strong> {popupInfo.openingHours}
+                  </p>
                 )}
               </div>
+            </Popup>
+          )}
+        </Map>
 
-              {popupInfo.openingHours && (
-                <p className="station-popup-hours">
-                  <strong>Horario:</strong> {popupInfo.openingHours}
-                </p>
-              )}
-            </div>
-          </Popup>
-        )}
-      </Map>
-
-      {/* Leyenda */}
-      <div className="map-legend">
-        <h4>Leyenda de precios (Gasolina 95)</h4>
-        <div className="legend-items">
-          {LEGEND_ITEMS.map(({ color, label }) => (
-            <div key={label} className="legend-item">
-              <span className="legend-color" style={{ backgroundColor: color }} />
-              <span>{label}</span>
-            </div>
-          ))}
+        {/* Leyenda */}
+        <div className="map-legend">
+          <h4>Leyenda de precios (Gasolina 95)</h4>
+          <div className="legend-items">
+            {LEGEND_ITEMS.map(({ color, label }) => (
+              <div key={label} className="legend-item">
+                <span className="legend-color" style={{ backgroundColor: color }} />
+                <span>{label}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
