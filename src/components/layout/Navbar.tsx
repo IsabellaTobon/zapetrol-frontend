@@ -1,7 +1,7 @@
-// Navbar.tsx
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import './Navbar.css';
-import { useAuth } from '../../hooks/useAuth';
+import { useAuthContext } from '../../hooks/useAuthContext';
 import toast from 'react-hot-toast';
 
 interface NavbarProps {
@@ -31,7 +31,10 @@ function ThemeToggle() {
 }
 
 export default function Navbar({ onOpenAuthModal }: NavbarProps) {
-  const { user, logout } = useAuth();
+  const { user, logout } = useAuthContext();
+
+  // Muestra el botón solo si el usuario existe y tiene role admin
+  const isAdmin = user?.role === 'admin';
 
   const shortName = user
     ? (user.email?.split('@')[0] || 'usuario')
@@ -45,12 +48,23 @@ export default function Navbar({ onOpenAuthModal }: NavbarProps) {
   return (
     <header className="navbar">
       <div className="nav-inner container">
-        <a className="nav-brand" href="/">
+        <Link className="nav-brand" to="/">
           <span className="brand-mark">ZP</span>
           <span className="brand-text">Zapetrol</span>
-        </a>
+        </Link>
 
-        <nav className="nav-links" aria-label="Principal" />
+        <nav className="nav-links" aria-label="Principal">
+          {user && (
+            <Link to="/favoritos" className="btn btn-outline">
+              ❤️ Favoritos
+            </Link>
+          )}
+          {isAdmin && (
+            <Link to="/admin" className="btn btn-outline">
+              Panel de Admin
+            </Link>
+          )}
+        </nav>
 
         <div className="nav-actions">
           <ThemeToggle />

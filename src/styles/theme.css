@@ -4,12 +4,15 @@
   --brand: #8a5fe8;
   --brand-2: #5d5fef;
 
-  --bg-900: #0b0c10;
-  --bg-850: #0f1115;
-  --bg-800: #171a22;
+  --bg-900: #1a1d29;
+  --bg-850: #1f2330;
+  --bg-800: #252936;
+  --bg-700: #2d3142;
 
   --text-100: #ffffff;
+  --text-200: rgba(255, 255, 255, 0.92);
   --text-300: rgba(255, 255, 255, 0.86);
+  --text-400: rgba(255, 255, 255, 0.75);
   --text-500: rgba(255, 255, 255, 0.65);
   --text-700: rgba(255, 255, 255, 0.45);
 
@@ -18,10 +21,42 @@
   --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.35);
 
   --radius: 12px;
+  --radius-md: 12px;
   --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-sm: 8px;
   --container: 1120px;
 
   --transition: 0.25s ease;
+
+  /* Alias para el panel de admin */
+  --primary: var(--brand);
+  --surface: var(--bg-800);
+  --text-primary: var(--text-100);
+  --text-secondary: var(--text-500);
+  --border: var(--stroke);
+  --hover: var(--bg-850);
+
+  /* Gradientes reutilizables */
+  --gradient-brand: linear-gradient(135deg, var(--brand), var(--brand-2));
+  --gradient-text: linear-gradient(135deg, var(--text-100) 0%, var(--brand) 100%);
+  --gradient-bg: linear-gradient(135deg, var(--bg-800) 0%, var(--bg-850) 100%);
+  --gradient-underline: linear-gradient(90deg, var(--brand), var(--brand-2));
+
+  /* Tipografía de encabezados */
+  --heading-h1-size: clamp(2.5rem, 5vw, 3.5rem);
+  --heading-h2-size: clamp(2rem, 5vw, 3rem);
+  --heading-h2-small-size: clamp(1.5rem, 4vw, 2rem);
+  --heading-weight-bold: 800;
+  --heading-weight-semibold: 700;
+  --heading-spacing: -0.03em;
+  --heading-spacing-small: -0.02em;
+
+  /* Colores de estado */
+  --color-error: #ef4444;
+  --color-success: #10b981;
+  --color-warning: #ff9500;
+  --color-info: #3b82f6;
 }
 
 /* === Tema claro === */
@@ -32,19 +67,32 @@
   --bg-900: #ffffff;
   --bg-850: #f8f9fb;
   --bg-800: #f1f2f5;
+  --bg-700: #e8eaed;
 
   --text-100: #0b0c10;
+  --text-200: #181a1f;
   --text-300: #202124;
+  --text-400: #2d2f33;
   --text-500: #3c4043;
   --text-700: #5f6368;
 
   --stroke: rgba(0, 0, 0, 0.08);
   --stroke-strong: rgba(0, 0, 0, 0.12);
   --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.1);
+
+  /* Alias para el panel de admin */
+  --primary: var(--brand);
+  --surface: var(--bg-800);
+  --text-primary: var(--text-100);
+  --text-secondary: var(--text-500);
+  --border: var(--stroke);
+  --hover: var(--bg-850);
 }
 
 /* === Estilos globales === */
-html, body, #root {
+html,
+body,
+#root {
   width: 100%;
   height: 100%;
 }
@@ -120,4 +168,103 @@ body {
 /* Transiciones suaves al cambiar tema */
 * {
   transition: background-color var(--transition), color var(--transition), border-color var(--transition);
+}
+
+/* === Componentes de texto reutilizables === */
+.gradient-heading-h1 {
+  font-size: var(--heading-h1-size);
+  font-weight: var(--heading-weight-bold);
+  line-height: 1.2;
+  letter-spacing: var(--heading-spacing);
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+  display: inline-block;
+}
+
+.gradient-heading-h2 {
+  font-size: var(--heading-h2-size);
+  font-weight: var(--heading-weight-bold);
+  line-height: 1.2;
+  letter-spacing: var(--heading-spacing);
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+  display: inline-block;
+}
+
+.gradient-heading-h2-small {
+  font-size: var(--heading-h2-small-size);
+  font-weight: var(--heading-weight-semibold);
+  letter-spacing: var(--heading-spacing-small);
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.heading-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background: var(--gradient-underline);
+  border-radius: 2px;
+  box-shadow: 0 0 12px color-mix(in srgb, var(--brand) 40%, transparent);
+}
+
+.heading-underline-large::after {
+  content: '';
+  position: absolute;
+  bottom: -0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: var(--gradient-underline);
+  border-radius: 2px;
+  box-shadow: 0 0 12px color-mix(in srgb, var(--brand) 40%, transparent);
+}
+
+/* === Botones reutilizables === */
+.btn-gradient {
+  background: var(--gradient-brand);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 8px color-mix(in srgb, var(--brand) 35%, transparent);
+}
+
+.btn-gradient:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+.btn-gradient:active {
+  transform: scale(0.98);
+}
+
+/* === Spinner de carga === */
+.loading-spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid var(--stroke);
+  border-top-color: var(--brand);
+  border-radius: 50%;
+  animation: spinRotate 1s linear infinite;
+}
+
+@keyframes spinRotate {
+  to {
+    transform: rotate(360deg);
+  }
 }
