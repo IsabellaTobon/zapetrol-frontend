@@ -47,37 +47,27 @@ export const REGEX = {
 
 // ========== VALIDADORES BASE ==========
 
-/**
- * Valida que un campo no esté vacío
- */
+// Valida que un campo no esté vacío
 export const isRequired = (value: string): boolean => {
   return value.trim().length > 0;
 };
 
-/**
- * Valida formato de correo electrónico
- */
+// Valida formato de correo electrónico
 export const isValidEmail = (email: string): boolean => {
   return REGEX.email.test(email.trim());
 };
 
-/**
- * Valida longitud mínima de contraseña
- */
+// Valida longitud mínima de contraseña
 export const isValidPassword = (password: string, minLength = 6): boolean => {
   return password.length >= minLength;
 };
 
-/**
- * Valida que la contraseña sea fuerte (mayúscula, minúscula, número, 8+ caracteres)
- */
+// Valida que la contraseña sea fuerte (mayúscula, minúscula, número, 8+ caracteres)
 export const isStrongPassword = (password: string): boolean => {
   return REGEX.strongPassword.test(password);
 };
 
-/**
- * Valida que dos contraseñas coincidan
- */
+// Valida que dos contraseñas coincidan
 export const doPasswordsMatch = (
   password: string,
   confirmPassword: string
@@ -90,33 +80,25 @@ export const doPasswordsMatch = (
   );
 };
 
-/**
- * Valida nombre con longitud mínima
- */
+// Valida nombre con longitud mínima
 export const isValidName = (name: string, minLength = 3): boolean => {
   const trimmed = name.trim();
   return trimmed.length >= minLength && REGEX.nameAlpha.test(trimmed);
 };
 
-/**
- * Valida longitud mínima de un string
- */
+// Valida longitud mínima de un string
 export const hasMinLength = (value: string, min: number): boolean => {
   return value.trim().length >= min;
 };
 
-/**
- * Valida longitud máxima de un string
- */
+// Valida longitud máxima de un string
 export const hasMaxLength = (value: string, max: number): boolean => {
   return value.trim().length <= max;
 };
 
 // ========== VALIDADORES DE FORMULARIO ==========
 
-/**
- * Valida un campo con múltiples reglas y retorna el primer error encontrado
- */
+// Valida un campo con múltiples reglas y retorna el primer error encontrado
 export const validateField = (
   value: string,
   rules: ValidationRule[]
@@ -135,9 +117,7 @@ export const validateField = (
   return { isValid: true, error: "" };
 };
 
-/**
- * Valida todos los campos de un formulario
- */
+// Valida todos los campos de un formulario
 export const validateForm = <T extends Record<string, string>>(
   formData: T,
   validators: FieldValidators
@@ -214,16 +194,12 @@ export const VALIDATION_RULES = {
 
 // ========== HELPERS ==========
 
-/**
- * Limpia y normaliza un email
- */
+// Limpia y normaliza un email
 export const sanitizeEmail = (email: string): string => {
   return email.trim().toLowerCase();
 };
 
-/**
- * Limpia y normaliza un nombre
- */
+// Limpia y normaliza el nombre
 export const sanitizeName = (name: string): string => {
   return name.trim().replace(/\s+/g, " ");
 };
