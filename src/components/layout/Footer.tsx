@@ -6,14 +6,7 @@ export default function Footer() {
     <footer className="footer">
       <div className="footer-inner">
         <p>
-          © {year} Zapetrol ·{' '}
-          <a
-            href="https://api.precioil.es"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            API oficial
-          </a>
+          © {year} Zapetrol{' '}
         </p>
       </div>
     </footer>

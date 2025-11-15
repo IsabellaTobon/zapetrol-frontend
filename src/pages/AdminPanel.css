@@ -9,32 +9,7 @@
   text-align: center;
 }
 
-.admin-header h1 {
-  font-size: var(--heading-h1-size);
-  font-weight: var(--heading-weight-bold);
-  line-height: 1.2;
-  margin-bottom: 1rem;
-  letter-spacing: var(--heading-spacing);
-  background: var(--gradient-text);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  position: relative;
-  display: inline-block;
-}
-
-.admin-header h1::after {
-  content: '';
-  position: absolute;
-  bottom: -0.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80px;
-  height: 4px;
-  background: var(--gradient-underline);
-  border-radius: 2px;
-  box-shadow: 0 0 12px color-mix(in srgb, var(--brand) 40%, transparent);
-}
+/* Usar .gradient-heading-h1 y .heading-underline-large de theme.css */
 
 .subtitle {
   color: var(--text-secondary);
@@ -178,6 +153,7 @@
   color: var(--text-primary);
 }
 
+/* Usar .gradient-heading-h2-small de theme.css para .modal h2 */
 .modal h2 {
   margin-bottom: 1.5rem;
   font-size: var(--heading-h2-small-size);

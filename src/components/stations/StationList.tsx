@@ -95,7 +95,7 @@ export default function StationList({
     return (
       <div className="station-list-container">
         <div className="loading-message">
-          <div className="spinner"></div>
+          <div className="loading-spinner"></div>
           <p>Cargando estaciones cercanas...</p>
         </div>
       </div>

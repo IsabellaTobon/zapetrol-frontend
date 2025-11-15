@@ -68,8 +68,7 @@
   }
 }
 
-.loading-message,
-.empty-message,
+/* Usar .loading-message y .empty-state de theme.css */
 .error-message {
   display: flex;
   flex-direction: column;
@@ -91,24 +90,22 @@
   text-align: center;
 }
 
-.spinner {
-  width: 50px;
-  height: 50px;
-  border: 4px solid var(--stroke);
-  border-top: 4px solid var(--brand);
-  border-radius: 50%;
-  animation: spinRotate 1s linear infinite;
-  margin-bottom: 1rem;
-}
-
 .empty-icon {
   font-size: 4rem;
   margin-bottom: 1rem;
   opacity: 0.5;
 }
 
-.empty-message p,
-.loading-message p {
+.empty-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  color: var(--text-500);
+}
+
+.empty-message p {
   font-size: 1.1rem;
   margin: 0;
   color: var(--text-300);

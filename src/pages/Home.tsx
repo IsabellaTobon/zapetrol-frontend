@@ -6,8 +6,9 @@ import "./Home.css";
 
 const RADIUS_KM = 5000;
 const MAX_STATIONS = 30;
-// Coordenadas de Madrid como fallback
-const DEFAULT_LOCATION = { latitude: 40.4168, longitude: -3.7038 };
+const GEOLOCATION_TIMEOUT = 8000; // 8 segundos máximo para geolocalización
+// Coordenadas del centro de Zaragoza como ubicación predeterminada
+const DEFAULT_LOCATION = { latitude: 41.6488, longitude: -0.8891 };
 
 type ViewMode = 'list' | 'map';
 
@@ -15,13 +16,18 @@ export default function Home() {
   const [stations, setStations] = useState<StationDetails[]>([]);
   const [loading, setLoading] = useState(true);
   const [locationDenied, setLocationDenied] = useState(false);
+  const [outOfSpain, setOutOfSpain] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>('list');
   const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | undefined>();
+  const [requestingLocation, setRequestingLocation] = useState(false);
 
-  useEffect(() => {
+  const requestGeolocation = () => {
+    setRequestingLocation(true);
+    setLocationDenied(false);
+    setOutOfSpain(false);
+
     const loadNearbyStations = async (latitude: number, longitude: number, isUserLocation = true) => {
       try {
-        setUserLocation({ latitude, longitude });
         const stations = await getStationsInRadiusWithDetailsAPI(
           latitude,
           longitude,
@@ -29,27 +35,168 @@ export default function Home() {
           1,
           MAX_STATIONS
         );
-        setStations(stations);
-        if (!isUserLocation) {
-          setLocationDenied(true);
+
+        // Si no se encontraron estaciones y es la ubicación del usuario, podría estar fuera de España
+        if (stations.length === 0 && isUserLocation) {
+          console.warn("No se encontraron estaciones en la ubicación del usuario");
+          setOutOfSpain(true);
+          // Cargar estaciones de Zaragoza como respaldo
+          const defaultStations = await getStationsInRadiusWithDetailsAPI(
+            DEFAULT_LOCATION.latitude,
+            DEFAULT_LOCATION.longitude,
+            RADIUS_KM,
+            1,
+            MAX_STATIONS
+          );
+          setStations(defaultStations);
+          setUserLocation(DEFAULT_LOCATION);
+        } else {
+          setStations(stations);
+          setUserLocation({ latitude, longitude });
+          if (!isUserLocation) {
+            setLocationDenied(true);
+          }
         }
       } catch (err) {
         console.error("Error cargando estaciones:", err);
-        // Si falla, al menos mostrar algo
-        setStations([]);
+        // Si hay error, intentar cargar estaciones de Zaragoza
+        if (isUserLocation) {
+          try {
+            const defaultStations = await getStationsInRadiusWithDetailsAPI(
+              DEFAULT_LOCATION.latitude,
+              DEFAULT_LOCATION.longitude,
+              RADIUS_KM,
+              1,
+              MAX_STATIONS
+            );
+            setStations(defaultStations);
+            setUserLocation(DEFAULT_LOCATION);
+            setOutOfSpain(true);
+          } catch (fallbackErr) {
+            console.error("Error cargando estaciones de respaldo:", fallbackErr);
+            setStations([]);
+          }
+        } else {
+          setStations([]);
+        }
+      } finally {
+        setLoading(false);
+        setRequestingLocation(false);
+      }
+    };
+
+    let timeoutId: number;
+    let geolocationCompleted = false;
+
+    // Crear una promesa de timeout
+    const timeoutPromise = new Promise<void>((resolve) => {
+      timeoutId = window.setTimeout(() => {
+        if (!geolocationCompleted) {
+          console.warn("Timeout de geolocalización alcanzado");
+          setLocationDenied(true);
+          setRequestingLocation(false);
+          resolve();
+        }
+      }, GEOLOCATION_TIMEOUT);
+    });
+
+    // Crear una promesa de geolocalización
+    const geolocationPromise = new Promise<void>((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          geolocationCompleted = true;
+          clearTimeout(timeoutId);
+          // Si se obtiene la ubicación, actualizar con estaciones cercanas al usuario
+          setLoading(true);
+          loadNearbyStations(position.coords.latitude, position.coords.longitude, true)
+            .then(resolve)
+            .catch(reject);
+        },
+        (err) => {
+          geolocationCompleted = true;
+          clearTimeout(timeoutId);
+          console.warn("Geolocalización denegada:", err.message);
+          setLocationDenied(true);
+          setRequestingLocation(false);
+          resolve();
+        },
+        {
+          timeout: GEOLOCATION_TIMEOUT,
+          enableHighAccuracy: false,
+          maximumAge: 300000 // 5 minutos
+        }
+      );
+    });
+
+    // Esperar a que termine la geolocalización o el timeout
+    Promise.race([geolocationPromise, timeoutPromise]);
+  };
+
+  useEffect(() => {
+    const loadNearbyStations = async (latitude: number, longitude: number, isUserLocation = true) => {
+      try {
+        const stations = await getStationsInRadiusWithDetailsAPI(
+          latitude,
+          longitude,
+          RADIUS_KM,
+          1,
+          MAX_STATIONS
+        );
+
+        // Si no se encontraron estaciones y es la ubicación del usuario, podría estar fuera de España
+        if (stations.length === 0 && isUserLocation) {
+          console.warn("No se encontraron estaciones en la ubicación del usuario");
+          setOutOfSpain(true);
+          // Cargar estaciones de Zaragoza como respaldo
+          const defaultStations = await getStationsInRadiusWithDetailsAPI(
+            DEFAULT_LOCATION.latitude,
+            DEFAULT_LOCATION.longitude,
+            RADIUS_KM,
+            1,
+            MAX_STATIONS
+          );
+          setStations(defaultStations);
+          setUserLocation(DEFAULT_LOCATION);
+        } else {
+          setStations(stations);
+          setUserLocation({ latitude, longitude });
+          if (!isUserLocation) {
+            setLocationDenied(true);
+          }
+        }
+      } catch (err) {
+        console.error("Error cargando estaciones:", err);
+        // Si hay error, intentar cargar estaciones de Zaragoza
+        if (isUserLocation) {
+          try {
+            const defaultStations = await getStationsInRadiusWithDetailsAPI(
+              DEFAULT_LOCATION.latitude,
+              DEFAULT_LOCATION.longitude,
+              RADIUS_KM,
+              1,
+              MAX_STATIONS
+            );
+            setStations(defaultStations);
+            setUserLocation(DEFAULT_LOCATION);
+            setOutOfSpain(true);
+          } catch (fallbackErr) {
+            console.error("Error cargando estaciones de respaldo:", fallbackErr);
+            setStations([]);
+          }
+        } else {
+          setStations([]);
+        }
       } finally {
         setLoading(false);
       }
     };
 
-    navigator.geolocation.getCurrentPosition(
-      (position) => loadNearbyStations(position.coords.latitude, position.coords.longitude, true),
-      (err) => {
-        console.warn("Geolocalización denegada, usando ubicación por defecto:", err.message);
-        // Si no hay permiso, cargar estaciones de Madrid por defecto
-        loadNearbyStations(DEFAULT_LOCATION.latitude, DEFAULT_LOCATION.longitude, false);
-      }
-    );
+    // Primero cargar estaciones de Zaragoza inmediatamente
+    loadNearbyStations(DEFAULT_LOCATION.latitude, DEFAULT_LOCATION.longitude, false)
+      .then(() => {
+        // Después intentar obtener la ubicación del usuario automáticamente
+        requestGeolocation();
+      });
   }, []);
 
   return (
@@ -80,16 +227,49 @@ export default function Home() {
               Ahorra en cada repostaje con información actualizada continuamente.
             </p>
 
-            {locationDenied && (
+            {outOfSpain && (
               <div className="alert-box">
                 <svg className="alert-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
                   <path d="M10 2C6.13 2 3 5.13 3 9c0 5.25 7 11 7 11s7-5.75 7-11c0-3.87-3.13-7-7-7z" stroke="currentColor" strokeWidth="1.5" fill="none" />
                   <circle cx="10" cy="9" r="2.5" stroke="currentColor" strokeWidth="1.5" fill="none" />
                 </svg>
-                <div>
-                  <div className="alert-title">Ubicación desactivada</div>
-                  <div className="alert-text">Active su ubicación para ver estaciones cercanas. Mostrando resultados en Madrid.</div>
+                <div className="alert-content">
+                  <div className="alert-title">Ubicación fuera de España</div>
+                  <div className="alert-text">No se encontraron estaciones en tu ubicación. Mostrando estaciones en Zaragoza.</div>
                 </div>
+              </div>
+            )}
+
+            {locationDenied && !outOfSpain && (
+              <div className="alert-box">
+                <svg className="alert-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M10 2C6.13 2 3 5.13 3 9c0 5.25 7 11 7 11s7-5.75 7-11c0-3.87-3.13-7-7-7z" stroke="currentColor" strokeWidth="1.5" fill="none" />
+                  <circle cx="10" cy="9" r="2.5" stroke="currentColor" strokeWidth="1.5" fill="none" />
+                </svg>
+                <div className="alert-content">
+                  <div className="alert-title">Ubicación desactivada</div>
+                  <div className="alert-text">Active su ubicación para ver estaciones cercanas a usted. Mostrando estaciones en Zaragoza.</div>
+                </div>
+                <button
+                  className="alert-button"
+                  onClick={requestGeolocation}
+                  disabled={requestingLocation}
+                >
+                  {requestingLocation ? (
+                    <>
+                      <div className="button-spinner"></div>
+                      Solicitando...
+                    </>
+                  ) : (
+                    <>
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M8 1C4.68629 1 2 3.68629 2 7c0 4.375 6 9 6 9s6-4.625 6-9c0-3.31371-2.6863-6-6-6z" stroke="currentColor" strokeWidth="1.5" />
+                        <circle cx="8" cy="7" r="2" stroke="currentColor" strokeWidth="1.5" />
+                      </svg>
+                      Activar ubicación
+                    </>
+                  )}
+                </button>
               </div>
             )}
           </div>
@@ -135,9 +315,9 @@ export default function Home() {
             </div>
 
             {/* Cards condicionales según ubicación */}
-            {!locationDenied ? (
+            {!locationDenied && !outOfSpain ? (
               <>
-                {/* Card 3: Estaciones cercanas - Con ubicación */}
+                {/* Card 3: Estaciones cercanas - Con ubicación del usuario */}
                 <div className="glass-card featured-card premium-card">
                   <div className="card-glow"></div>
                   <div className="premium-shine"></div>
@@ -158,7 +338,7 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* Card 4: Radio de búsqueda - Con ubicación */}
+                {/* Card 4: Radio de búsqueda - Con ubicación del usuario */}
                 <div className="glass-card interactive-card premium-card">
                   <div className="card-pattern"></div>
                   <div className="premium-shine"></div>
@@ -184,7 +364,28 @@ export default function Home() {
               </>
             ) : (
               <>
-                {/* Card 3: Invitación a activar ubicación - Sin ubicación */}
+                {/* Card 3: Estaciones disponibles - Sin ubicación o fuera de España */}
+                <div className="glass-card featured-card premium-card">
+                  <div className="card-glow"></div>
+                  <div className="premium-shine"></div>
+                  <div className="icon-wrapper icon-primary">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+                      <path d="M12 2L3 7v10l9 5 9-5V7l-9-5z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+                      <path d="M12 12l9-5M12 12v9.5M12 12L3 7" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+                    </svg>
+                  </div>
+                  <div className="card-title-small">Estaciones en Zaragoza</div>
+                  <div className="card-value">{stations.length}</div>
+                  <div className="card-description">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <path d="M8 1C4.68629 1 2 3.68629 2 7c0 4.375 6 9 6 9s6-4.625 6-9c0-3.31371-2.6863-6-6-6z" stroke="currentColor" strokeWidth="1.5" />
+                      <circle cx="8" cy="7" r="2" stroke="currentColor" strokeWidth="1.5" />
+                    </svg>
+                    Centro de Zaragoza
+                  </div>
+                </div>
+
+                {/* Card 4: Invitación a activar ubicación */}
                 <div className="glass-card location-prompt-card premium-card">
                   <div className="premium-shine"></div>
                   <div className="icon-wrapper icon-warning">
@@ -193,34 +394,16 @@ export default function Home() {
                       <circle cx="12" cy="9" r="2.5" stroke="currentColor" strokeWidth="2" />
                     </svg>
                   </div>
-                  <div className="card-title-small">Activa tu ubicación</div>
+                  <div className="card-title-small">
+                    {outOfSpain ? 'Fuera de España' : 'Activa tu ubicación'}
+                  </div>
                   <div className="card-value-small">GPS</div>
                   <div className="card-description">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                       <path d="M8 1v3M8 12v3M1 8h3M12 8h3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                       <circle cx="8" cy="8" r="3" stroke="currentColor" strokeWidth="1.5" />
                     </svg>
-                    Encuentra gasolineras cerca de ti
-                  </div>
-                </div>
-
-                {/* Card 4: Resultados por defecto - Sin ubicación */}
-                <div className="glass-card default-results-card premium-card">
-                  <div className="premium-shine"></div>
-                  <div className="icon-wrapper icon-info">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-                      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
-                      <path d="M12 16v-4M12 8h.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                    </svg>
-                  </div>
-                  <div className="card-title-small">Estaciones listadas</div>
-                  <div className="card-value-small">?</div>
-                  <div className="card-description">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                      <path d="M8 1C4.68629 1 2 3.68629 2 7c0 4.375 6 9 6 9s6-4.625 6-9c0-3.31371-2.6863-6-6-6z" stroke="currentColor" strokeWidth="1.5" />
-                      <circle cx="8" cy="7" r="2" stroke="currentColor" strokeWidth="1.5" />
-                    </svg>
-                    Activa GPS para ver tus estaciones
+                    {outOfSpain ? 'Sin estaciones en tu zona' : 'Para ver estaciones cerca de ti'}
                   </div>
                 </div>
               </>
@@ -256,7 +439,7 @@ export default function Home() {
             ) : (
               loading ? (
                 <div className="loading-message">
-                  <div className="spinner"></div>
+                  <div className="loading-spinner"></div>
                   <p>Cargando mapa...</p>
                 </div>
               ) : (
@@ -269,7 +452,7 @@ export default function Home() {
           <div className="desktop-view">
             {loading ? (
               <div className="loading-message">
-                <div className="spinner"></div>
+                <div className="loading-spinner"></div>
                 <p>Cargando estaciones...</p>
               </div>
             ) : (
