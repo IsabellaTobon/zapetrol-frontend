@@ -68,14 +68,6 @@ export default function Navbar({ onOpenAuthModal }: NavbarProps) {
 
         <div className="nav-actions">
           <ThemeToggle />
-          <a
-            href="https://api.precioil.es"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btn-outline"
-          >
-            API Docs
-          </a>
 
           {!user ? (
             <button className="btn btn-primary" onClick={onOpenAuthModal}>
