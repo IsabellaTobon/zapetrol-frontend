@@ -48,7 +48,7 @@ export default function Favorites() {
     return (
       <div className="favorites-container">
         <div className="loading-message">
-          <div className="spinner"></div>
+          <div className="loading-spinner"></div>
           <p>Cargando favoritos...</p>
         </div>
       </div>
@@ -58,7 +58,7 @@ export default function Favorites() {
   return (
     <div className="favorites-container">
       <div className="favorites-header">
-        <h1>Mis Favoritos</h1>
+        <h1 className="gradient-heading-h1 heading-underline-large">Mis Favoritos</h1>
         <p className="favorites-count">
           {favorites.length === 0
             ? 'No tienes estaciones favoritas'
@@ -68,8 +68,8 @@ export default function Favorites() {
       </div>
 
       {stations.length === 0 ? (
-        <div className="favorites-empty">
-          <span className="empty-icon">❤️</span>
+        <div className="empty-state">
+          <span className="empty-state-icon">❤️</span>
           <h2>Sin favoritos</h2>
           <p>Añade estaciones a favoritos para verlas aquí</p>
         </div>

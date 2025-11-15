@@ -82,7 +82,7 @@ export default function AdminPanel() {
   return (
     <div className="admin-panel">
       <header className="admin-header">
-        <h1>Panel de Administración</h1>
+        <h1 className="gradient-heading-h1 heading-underline-large">Panel de Administración</h1>
         <p className="subtitle">Gestión de usuarios</p>
       </header>
 

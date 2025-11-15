@@ -6,7 +6,7 @@ export default function Footer() {
     <footer className="footer">
       <div className="footer-inner">
         <p>
-          © {year} Zapetrol ·{' '}
+          © {year} Zapetrol{' '}
         </p>
       </div>
     </footer>
