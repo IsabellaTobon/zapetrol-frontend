@@ -183,7 +183,17 @@ export default function Home() {
     };
 
     // Primero cargar estaciones de Zaragoza inmediatamente
-    loadNearbyStations(DEFAULT_LOCATION.latitude, DEFAULT_LOCATION.longitude, false);
+    const init = async () => {
+      try {
+        await loadNearbyStations(DEFAULT_LOCATION.latitude, DEFAULT_LOCATION.longitude, false);
+      } catch (err) {
+        console.error("Error en carga inicial:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    init();
 
     // Luego intentar obtener ubicación del usuario en segundo plano
     let timeoutId: number;
