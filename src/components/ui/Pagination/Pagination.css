@@ -10,7 +10,7 @@
 .pagination-btn {
   min-width: 2.5rem;
   height: 2.5rem;
-  padding: 0.5rem;
+  padding: 0;
   border: 1px solid var(--stroke);
   background: var(--bg-800);
   border-radius: var(--radius);
@@ -19,6 +19,9 @@
   font-weight: 500;
   transition: all var(--transition);
   color: var(--text-300);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .pagination-btn:hover:not(:disabled) {
@@ -42,12 +45,15 @@
   padding: 0.5rem;
   color: var(--text-700);
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2rem;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
   .pagination {
-    gap: 0.25rem;
     padding: 0.5rem;
   }
 
