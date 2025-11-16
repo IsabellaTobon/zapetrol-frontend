@@ -53,9 +53,6 @@ export default function Home() {
         } else {
           setStations(stations);
           setUserLocation({ latitude, longitude });
-          if (!isUserLocation) {
-            setLocationDenied(true);
-          }
         }
       } catch (err) {
         console.error("Error cargando estaciones:", err);
@@ -80,7 +77,6 @@ export default function Home() {
           setStations([]);
         }
       } finally {
-        setLoading(false);
         setRequestingLocation(false);
       }
     };
@@ -106,8 +102,6 @@ export default function Home() {
         (position) => {
           geolocationCompleted = true;
           clearTimeout(timeoutId);
-          // Si se obtiene la ubicación, actualizar con estaciones cercanas al usuario
-          setLoading(true);
           loadNearbyStations(position.coords.latitude, position.coords.longitude, true)
             .then(resolve)
             .catch(reject);
@@ -160,9 +154,6 @@ export default function Home() {
         } else {
           setStations(stations);
           setUserLocation({ latitude, longitude });
-          if (!isUserLocation) {
-            setLocationDenied(true);
-          }
         }
       } catch (err) {
         console.error("Error cargando estaciones:", err);
@@ -192,11 +183,46 @@ export default function Home() {
     };
 
     // Primero cargar estaciones de Zaragoza inmediatamente
-    loadNearbyStations(DEFAULT_LOCATION.latitude, DEFAULT_LOCATION.longitude, false)
-      .then(() => {
-        // Después intentar obtener la ubicación del usuario automáticamente
-        requestGeolocation();
-      });
+    loadNearbyStations(DEFAULT_LOCATION.latitude, DEFAULT_LOCATION.longitude, false);
+
+    // Luego intentar obtener ubicación del usuario en segundo plano
+    let timeoutId: number;
+    let geolocationCompleted = false;
+
+    const timeoutPromise = new Promise<void>((resolve) => {
+      timeoutId = window.setTimeout(() => {
+        if (!geolocationCompleted) {
+          console.warn("Timeout de geolocalización alcanzado");
+          resolve();
+        }
+      }, GEOLOCATION_TIMEOUT);
+    });
+
+    const geolocationPromise = new Promise<void>((resolve) => {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          geolocationCompleted = true;
+          clearTimeout(timeoutId);
+          // Cargar estaciones cercanas al usuario sin cambiar loading
+          loadNearbyStations(position.coords.latitude, position.coords.longitude, true)
+            .then(resolve);
+        },
+        (err) => {
+          geolocationCompleted = true;
+          clearTimeout(timeoutId);
+          console.warn("Geolocalización denegada:", err.message);
+          setLocationDenied(true);
+          resolve();
+        },
+        {
+          timeout: GEOLOCATION_TIMEOUT,
+          enableHighAccuracy: false,
+          maximumAge: 300000
+        }
+      );
+    });
+
+    Promise.race([geolocationPromise, timeoutPromise]);
   }, []);
 
   return (
