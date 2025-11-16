@@ -90,6 +90,12 @@
 }
 
 /* === Estilos globales === */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 html,
 body,
 #root {
