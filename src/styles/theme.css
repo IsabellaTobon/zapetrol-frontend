@@ -111,6 +111,10 @@ body {
   transition: background var(--transition), color var(--transition);
 }
 
+a {
+  text-decoration: none;
+}
+
 #root {
   max-width: none;
   margin: 0;
