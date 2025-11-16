@@ -727,6 +727,22 @@
   padding: 3rem 1.5rem;
 }
 
+/* Tablet */
+@media (max-width: 1024px) {
+  .card-title-small {
+    font-size: 0.95rem;
+  }
+
+  .card-description {
+    font-size: 0.875rem;
+  }
+
+  .hero-badge {
+    font-size: 0.875rem;
+  }
+}
+
+/* Móvil */
 @media (max-width: 768px) {
   .hero-section {
     padding: 3rem 1rem 3rem;
@@ -734,6 +750,21 @@
 
   .content-wrapper {
     padding: 2rem 1rem;
+  }
+
+  /* Aumentar tamaños en tablet/móvil */
+  .hero-badge {
+    font-size: 0.9rem;
+    padding: 0.6rem 1.25rem;
+  }
+
+  .card-description {
+    font-size: 0.9rem;
+    padding: 0.85rem 1.125rem;
+  }
+
+  .card-title-small {
+    font-size: 1rem;
   }
 }
 
