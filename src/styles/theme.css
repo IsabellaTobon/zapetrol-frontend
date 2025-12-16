@@ -90,6 +90,12 @@
 }
 
 /* === Estilos globales === */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 html,
 body,
 #root {
@@ -103,6 +109,10 @@ body {
   color: var(--text-300);
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   transition: background var(--transition), color var(--transition);
+}
+
+a {
+  text-decoration: none;
 }
 
 #root {
@@ -188,6 +198,7 @@ body {
   font-size: var(--heading-h2-size);
   font-weight: var(--heading-weight-bold);
   line-height: 1.2;
+  margin-bottom: 1rem;
   letter-spacing: var(--heading-spacing);
   background: var(--gradient-text);
   -webkit-background-clip: text;
@@ -320,4 +331,21 @@ body {
   font-size: 1rem;
   color: var(--text-500);
   margin: 0;
+}
+
+/* === Animaciones reutilizables === */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
 }

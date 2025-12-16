@@ -8,6 +8,7 @@ export default function AdminPanel() {
   const [loading, setLoading] = useState(true);
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [formData, setFormData] = useState<UpdateUserDto>({});
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     loadUsers();
@@ -70,6 +71,16 @@ export default function AdminPanel() {
     }
   }
 
+  // Filtrar usuarios según el término de búsqueda
+  const filteredUsers = users.filter((user) => {
+    const search = searchTerm.toLowerCase();
+    return (
+      user.id.toString().includes(search) ||
+      user.email.toLowerCase().includes(search) ||
+      (user.name && user.name.toLowerCase().includes(search))
+    );
+  });
+
   if (loading) {
     return (
       <div className="admin-panel">
@@ -86,6 +97,21 @@ export default function AdminPanel() {
         <p className="subtitle">Gestión de usuarios</p>
       </header>
 
+      <div className="search-container">
+        <input
+          type="text"
+          className="search-input"
+          placeholder="🔍 Buscar por ID, nombre o email..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        {searchTerm && (
+          <button className="clear-search" onClick={() => setSearchTerm('')}>
+            ✕
+          </button>
+        )}
+      </div>
+
       <div className="users-table-container">
         <table className="users-table">
           <thead>
@@ -99,18 +125,18 @@ export default function AdminPanel() {
             </tr>
           </thead>
           <tbody>
-            {users.map((user) => (
+            {filteredUsers.map((user) => (
               <tr key={user.id}>
-                <td>{user.id}</td>
-                <td>{user.name || '-'}</td>
-                <td>{user.email}</td>
-                <td>
+                <td data-label="ID">{user.id}</td>
+                <td data-label="Nombre">{user.name || '-'}</td>
+                <td data-label="Email">{user.email}</td>
+                <td data-label="Rol">
                   <span className={`badge badge-${user.role}`}>
                     {user.role}
                   </span>
                 </td>
-                <td>{new Date(user.createdAt).toLocaleDateString('es-ES')}</td>
-                <td>
+                <td data-label="Registro">{new Date(user.createdAt).toLocaleDateString('es-ES')}</td>
+                <td data-label="Acciones">
                   <div className="actions">
                     <button
                       className="btn-icon btn-edit"
@@ -133,8 +159,10 @@ export default function AdminPanel() {
           </tbody>
         </table>
 
-        {users.length === 0 && (
-          <p className="no-users">No hay usuarios registrados</p>
+        {filteredUsers.length === 0 && !loading && (
+          <p className="no-users">
+            {searchTerm ? `No se encontraron usuarios con "${searchTerm}"` : 'No hay usuarios registrados'}
+          </p>
         )}
       </div>
 
@@ -143,7 +171,7 @@ export default function AdminPanel() {
         <div className="modal-overlay">
           <div className="modal">
             <button className="close-btn" onClick={cancelEdit}>✕</button>
-            <h2>Editar Usuario</h2>
+            <h2 className="gradient-heading-h2-small">Editar Usuario</h2>
 
             <form onSubmit={handleUpdate}>
               <div className="form-group">

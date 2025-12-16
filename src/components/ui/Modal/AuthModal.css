@@ -285,7 +285,7 @@ button[disabled] {
 .requirement-item::before {
   content: "○";
   font-size: 0.625rem;
-  transition: all 0.2s ease;
+  transition: all var(--transition);
 }
 
 .requirement-item.met::before {

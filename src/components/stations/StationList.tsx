@@ -116,7 +116,7 @@ export default function StationList({
   return (
     <div className="station-list-container">
       <div className="station-list-header">
-        <h2>Estaciones cercanas</h2>
+        <h2 className="gradient-heading-h2 heading-underline">Estaciones cercanas</h2>
         <p className="station-count">
           Mostrando {startIndex + 1}-{Math.min(endIndex, filteredAndSortedStations.length)} de {filteredAndSortedStations.length} estaciones
           {filteredAndSortedStations.length !== stations.length && (
@@ -146,7 +146,7 @@ export default function StationList({
         </div>
       ) : (
         <>
-          <div className="station-grid">
+          <div className="station-grid fade-in">
             {currentStations.map((station) => (
               <StationCard
                 key={station.stationId}

@@ -9,18 +9,65 @@
   text-align: center;
 }
 
-/* Usar .gradient-heading-h1 y .heading-underline-large de theme.css */
-
 .subtitle {
   color: var(--text-secondary);
   font-size: 1rem;
 }
 
+.search-container {
+  position: relative;
+  max-width: 600px;
+  margin: 0 auto 2rem;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.875rem 3rem 0.875rem 1rem;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 1rem;
+  transition: all var(--transition);
+  background: var(--surface);
+  color: var(--text-primary);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 10%, transparent);
+}
+
+.search-input::placeholder {
+  color: var(--text-secondary);
+}
+
+.clear-search {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0.25rem;
+  line-height: 1;
+  transition: color var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clear-search:hover {
+  color: var(--text-primary);
+}
+
 .users-table-container {
   background: var(--surface);
-  border-radius: 8px;
+  border-radius: var(--radius);
   padding: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-lg);
   overflow-x: auto;
 }
 
@@ -60,19 +107,19 @@
 .badge {
   display: inline-block;
   padding: 0.25rem 0.75rem;
-  border-radius: 12px;
+  border-radius: var(--radius);
   font-size: 0.85rem;
   font-weight: 600;
   text-transform: uppercase;
 }
 
 .badge-admin {
-  background: #ff6b6b;
+  background: var(--color-error);
   color: white;
 }
 
 .badge-user {
-  background: #4ecdc4;
+  background: var(--color-info);
   color: white;
 }
 
@@ -87,8 +134,8 @@
   cursor: pointer;
   font-size: 1.2rem;
   padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  transition: all 0.2s;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition);
 }
 
 .btn-icon:hover {
@@ -97,11 +144,11 @@
 }
 
 .btn-edit:hover {
-  background: rgba(74, 144, 226, 0.1);
+  background: color-mix(in srgb, var(--primary) 10%, transparent);
 }
 
 .btn-delete:hover {
-  background: rgba(255, 107, 107, 0.1);
+  background: color-mix(in srgb, var(--color-error) 10%, transparent);
 }
 
 .no-users {
@@ -121,18 +168,21 @@
   justify-content: center;
   z-index: 1000;
   backdrop-filter: blur(4px);
+  padding: 1rem;
+  overflow-y: auto;
 }
 
 .modal {
   background: var(--surface);
   padding: 2rem;
-  border-radius: 12px;
-  width: 90%;
+  border-radius: var(--radius-lg);
+  width: 100%;
   max-width: 500px;
-  max-height: 90vh;
+  max-height: calc(100vh - 2rem);
   overflow-y: auto;
   position: relative;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-lg);
+  margin: auto;
 }
 
 .close-btn {
@@ -146,23 +196,11 @@
   color: var(--text-secondary);
   padding: 0.25rem;
   line-height: 1;
-  transition: color 0.2s;
+  transition: color var(--transition);
 }
 
 .close-btn:hover {
   color: var(--text-primary);
-}
-
-/* Usar .gradient-heading-h2-small de theme.css para .modal h2 */
-.modal h2 {
-  margin-bottom: 1.5rem;
-  font-size: var(--heading-h2-small-size);
-  font-weight: var(--heading-weight-semibold);
-  letter-spacing: var(--heading-spacing-small);
-  background: var(--gradient-text);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
 .form-group {
@@ -185,33 +223,346 @@
 }
 
 /* Responsive */
+@media (max-width: 1024px) {
+  .admin-panel {
+    padding: 1.5rem;
+  }
+
+  .users-table th {
+    font-size: 0.85rem;
+    padding: 0.9rem 0.8rem;
+  }
+
+  .users-table td {
+    padding: 0.9rem 0.8rem;
+  }
+}
+
 @media (max-width: 768px) {
   .admin-panel {
     padding: 1rem;
   }
 
+  .admin-header {
+    margin-bottom: 2rem;
+  }
+
+  .search-container {
+    margin-bottom: 1.5rem;
+  }
+
+  .search-input {
+    padding: 0.75rem 2.5rem 0.75rem 0.875rem;
+    font-size: 0.95rem;
+  }
+
   .users-table-container {
     padding: 1rem;
+    border-radius: var(--radius-sm);
   }
 
   .users-table {
     font-size: 0.85rem;
   }
 
-  .users-table th,
+  .users-table th {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.75rem;
+  }
+
   .users-table td {
     padding: 0.75rem 0.5rem;
+    font-size: 0.85rem;
+  }
+
+  .badge {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.6rem;
+  }
+
+  .btn-icon {
+    font-size: 1rem;
+    padding: 0.2rem 0.4rem;
   }
 
   .modal {
     padding: 1.5rem;
+    width: calc(100% - 2rem);
+    max-width: none;
+    max-height: calc(100vh - 2rem);
+    border-radius: var(--radius);
+  }
+
+  .modal-overlay {
+    padding: 1rem;
+  }
+
+  .modal h2 {
+    font-size: 1.5rem;
+    padding-right: 2rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.25rem;
   }
 
   .modal-actions {
     flex-direction: column-reverse;
+    gap: 0.75rem;
   }
 
   .modal-actions button {
     width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-panel {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .admin-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .search-container {
+    margin-bottom: 1.25rem;
+    padding: 0 0.25rem;
+  }
+
+  .search-input {
+    padding: 0.7rem 2.5rem 0.7rem 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+  }
+
+  .users-table-container {
+    padding: 0.5rem;
+  }
+
+  /* Modal overlay con padding para móvil */
+  .modal-overlay {
+    padding: 0.75rem;
+    align-items: flex-start;
+  }
+
+  /* Convertir tabla en tarjetas */
+  .users-table thead {
+    display: none;
+  }
+
+  .users-table,
+  .users-table tbody {
+    display: block;
+  }
+
+  .users-table tbody tr {
+    display: block;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 1rem;
+    padding: 1rem;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  }
+
+  .users-table tbody tr:hover {
+    background: var(--surface);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .users-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+  }
+
+  .users-table td:last-child {
+    border-bottom: none;
+    padding-top: 0.75rem;
+  }
+
+  /* Añadir etiquetas antes de cada campo */
+  .users-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .badge {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.6rem;
+  }
+
+  .actions {
+    gap: 0.5rem;
+    justify-content: flex-end;
+    width: 100%;
+  }
+
+  .btn-icon {
+    font-size: 1.1rem;
+    padding: 0.3rem 0.5rem;
+  }
+
+  .modal {
+    padding: 1.25rem;
+    width: calc(100% - 1.5rem);
+    max-width: none;
+    max-height: calc(100vh - 1.5rem);
+    border-radius: var(--radius);
+  }
+
+  .close-btn {
+    top: 0.75rem;
+    right: 0.75rem;
+    font-size: 1.3rem;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal h2 {
+    font-size: 1.4rem;
+    margin-bottom: 1.25rem;
+    padding-right: 2.5rem;
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
+  .form-group label {
+    font-size: 0.85rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .form-group input,
+  .form-group select {
+    font-size: 16px;
+    /* Previene zoom automático en iOS */
+  }
+
+  .modal-actions {
+    margin-top: 1.5rem;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .admin-panel {
+    padding: 0.5rem 0.25rem;
+  }
+
+  .admin-header {
+    margin-bottom: 1rem;
+  }
+
+  .search-container {
+    margin-bottom: 1rem;
+    padding: 0 0.15rem;
+  }
+
+  .search-input {
+    padding: 0.65rem 2.25rem 0.65rem 0.65rem;
+    font-size: 0.85rem;
+  }
+
+  .clear-search {
+    font-size: 1.1rem;
+    right: 0.5rem;
+  }
+
+  .subtitle {
+    font-size: 0.85rem;
+  }
+
+  .users-table-container {
+    padding: 0.25rem;
+  }
+
+  /* Modal overlay con menos padding en pantallas muy pequeñas */
+  .modal-overlay {
+    padding: 0.5rem;
+    align-items: flex-start;
+  }
+
+  .users-table tbody tr {
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .users-table td {
+    padding: 0.4rem 0;
+    font-size: 0.85rem;
+  }
+
+  .users-table td::before {
+    font-size: 0.75rem;
+  }
+
+  .badge {
+    font-size: 0.7rem;
+    padding: 0.15rem 0.5rem;
+  }
+
+  .btn-icon {
+    font-size: 1rem;
+    padding: 0.25rem 0.4rem;
+  }
+
+  .modal {
+    padding: 1rem;
+    width: calc(100% - 1rem);
+    max-width: none;
+    max-height: calc(100vh - 1rem);
+    border-radius: var(--radius-sm);
+  }
+
+  .close-btn {
+    top: 0.5rem;
+    right: 0.5rem;
+    font-size: 1.2rem;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal h2 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    padding-right: 2.5rem;
+  }
+
+  .form-group {
+    margin-bottom: 0.85rem;
+  }
+
+  .form-group label {
+    font-size: 0.8rem;
+  }
+
+  .form-group input,
+  .form-group select {
+    font-size: 16px;
+    /* Previene zoom automático en iOS */
+    padding: 10px;
+  }
+
+  .modal-actions {
+    margin-top: 1.25rem;
   }
 }

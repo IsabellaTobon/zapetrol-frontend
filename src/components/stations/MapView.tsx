@@ -92,7 +92,7 @@ export default function MapView({ stations, userLocation }: MapViewProps) {
   return (
     <div className="map-container">
       <div className="map-header">
-        <h2>Mapa de estaciones</h2>
+        <h2 className="gradient-heading-h2 heading-underline">Mapa de estaciones</h2>
       </div>
       <div className="map-wrapper">
         <Map
