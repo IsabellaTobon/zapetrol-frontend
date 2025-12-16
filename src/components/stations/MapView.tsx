@@ -190,6 +190,15 @@ export default function MapView({ stations, userLocation }: MapViewProps) {
                     <strong>Horario:</strong> {popupInfo.openingHours}
                   </p>
                 )}
+
+                <a
+                  href={`https://www.google.com/maps/dir/?api=1&destination=${popupInfo.latitude},${popupInfo.longitude}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="directions-btn"
+                >
+                  🧭 Cómo llegar
+                </a>
               </div>
             </Popup>
           )}

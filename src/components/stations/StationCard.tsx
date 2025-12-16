@@ -63,6 +63,17 @@ export default function StationCard({
           </div>
         ))}
       </div>
+
+      <div className="station-actions">
+        <a
+          href={`https://www.google.com/maps/dir/?api=1&destination=${station.latitude},${station.longitude}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="directions-btn"
+        >
+          🧭 Cómo llegar
+        </a>
+      </div>
     </div>
   );
 }

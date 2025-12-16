@@ -177,6 +177,40 @@
   filter: drop-shadow(0 0 8px rgba(138, 95, 232, 0.4));
 }
 
+/* Botones de acción */
+.station-actions {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--stroke-strong);
+}
+
+.directions-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: var(--gradient-brand);
+  color: white;
+  text-decoration: none;
+  border-radius: var(--radius);
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all var(--transition);
+  box-shadow: 0 2px 8px rgba(138, 95, 232, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.directions-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(138, 95, 232, 0.5);
+}
+
+.directions-btn:active {
+  transform: translateY(0);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .station-card {
