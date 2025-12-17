@@ -71,7 +71,7 @@ export default function StationCard({
           rel="noopener noreferrer"
           className="directions-btn"
         >
-          🧭 Cómo llegar
+          Cómo llegar
         </a>
       </div>
     </div>

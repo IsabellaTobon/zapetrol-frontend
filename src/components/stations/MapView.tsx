@@ -161,35 +161,25 @@ export default function MapView({ stations, userLocation }: MapViewProps) {
                 {popupInfo.brand && (
                   <p className="station-popup-brand">{popupInfo.brand}</p>
                 )}
-                <p className="station-popup-address">{popupInfo.address}</p>
-                <p className="station-popup-locality">
-                  {popupInfo.locality}, {popupInfo.province}
+                <p className="station-popup-address">
+                  {popupInfo.locality}
                 </p>
 
                 <div className="station-popup-prices">
-                  <h4>Precios</h4>
                   {[
-                    { type: 'Gasolina 95', price: popupInfo.Gasoline95, avg: popupInfo.Gasoline95_avg },
-                    { type: 'Gasolina 98', price: popupInfo.Gasoline98, avg: popupInfo.Gasoline98_avg },
-                    { type: 'Diesel', price: popupInfo.Diesel, avg: popupInfo.Diesel_avg },
-                    { type: 'Diesel Premium', price: popupInfo.DieselPremium, avg: popupInfo.DieselPremium_avg },
+                    { type: 'Gas. 95', price: popupInfo.Gasoline95 },
+                    { type: 'Gas. 98', price: popupInfo.Gasoline98 },
+                    { type: 'Diesel', price: popupInfo.Diesel },
                   ].map(
-                    ({ type, price, avg }) =>
+                    ({ type, price }) =>
                       price && (
                         <div key={type} className="price-row">
                           <span className="fuel-type">{type}</span>
                           <span className="fuel-price">{price.toFixed(3)}€</span>
-                          {avg && <span className="fuel-avg">(media: {avg.toFixed(3)}€)</span>}
                         </div>
                       )
                   )}
                 </div>
-
-                {popupInfo.openingHours && (
-                  <p className="station-popup-hours">
-                    <strong>Horario:</strong> {popupInfo.openingHours}
-                  </p>
-                )}
 
                 <a
                   href={`https://www.google.com/maps/dir/?api=1&destination=${popupInfo.latitude},${popupInfo.longitude}`}
@@ -197,7 +187,7 @@ export default function MapView({ stations, userLocation }: MapViewProps) {
                   rel="noopener noreferrer"
                   className="directions-btn"
                 >
-                  🧭 Cómo llegar
+                  Cómo llegar
                 </a>
               </div>
             </Popup>

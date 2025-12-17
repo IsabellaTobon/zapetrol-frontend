@@ -192,19 +192,39 @@
   width: 100%;
   padding: 0.75rem 1rem;
   background: var(--gradient-brand);
-  color: white;
+  color: var(--text-100);
   text-decoration: none;
   border-radius: var(--radius);
-  font-weight: 500;
-  font-size: 0.9rem;
+  font-weight: 600;
+  font-size: 0.95rem;
   transition: all var(--transition);
   box-shadow: 0 2px 8px rgba(138, 95, 232, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.directions-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+  opacity: 0;
+  transition: opacity var(--transition);
 }
 
 .directions-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(138, 95, 232, 0.5);
+  box-shadow:
+    0 4px 12px rgba(138, 95, 232, 0.5),
+    0 0 20px rgba(138, 95, 232, 0.3);
+}
+
+.directions-btn:hover::before {
+  opacity: 1;
 }
 
 .directions-btn:active {
