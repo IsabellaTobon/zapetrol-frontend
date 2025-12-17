@@ -60,6 +60,12 @@
   text-decoration: underline;
 }
 
+/* Ajuste para popup compacto */
+.station-popup .directions-btn {
+  padding: 0.625rem 0.75rem;
+  font-size: 0.813rem;
+}
+
 /* Marcador de usuario */
 .user-marker {
   position: relative;
@@ -74,8 +80,8 @@
   transform: translate(-50%, -50%);
   width: 16px;
   height: 16px;
-  background: #3b82f6;
-  border: 3px solid white;
+  background: var(--color-info);
+  border: 3px solid var(--text-100);
   border-radius: 50%;
   box-shadow: 0 2px 8px rgba(59, 130, 246, 0.5);
   z-index: 2;
@@ -137,97 +143,69 @@
   padding: 0 !important;
   border-radius: var(--radius);
   box-shadow: var(--shadow-lg);
-  max-width: 320px;
+  max-width: 240px;
   background: var(--bg-900);
+  max-height: 400px;
+  overflow-y: auto;
 }
 
 .station-popup-content {
-  padding: 1rem;
+  padding: 0.875rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
 .station-popup-title {
-  font-size: 1.125rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--text-100);
-  margin: 0 0 0.25rem 0;
+  margin: 0;
   line-height: 1.3;
 }
 
 .station-popup-brand {
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   color: var(--brand);
-  font-weight: 500;
-  margin: 0 0 0.5rem 0;
+  font-weight: 600;
+  margin: 0;
   text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .station-popup-address {
-  font-size: 0.875rem;
-  color: var(--text-500);
-  margin: 0 0 0.25rem 0;
-}
-
-.station-popup-locality {
-  font-size: 0.875rem;
-  color: var(--text-500);
-  margin: 0 0 1rem 0;
+  font-size: 0.813rem;
+  color: var(--text-400);
+  margin: 0;
 }
 
 .station-popup-prices {
-  margin: 1rem 0;
-  padding-top: 1rem;
-  border-top: 1px solid var(--stroke);
-}
-
-.station-popup-prices h4 {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--text-300);
-  margin: 0 0 0.5rem 0;
-  text-transform: uppercase;
-  letter-spacing: 0.025em;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
 }
 
 .price-row {
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-  flex-wrap: wrap;
-}
-
-.price-row:last-child {
-  margin-bottom: 0;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.5rem;
+  background: var(--bg-800);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--stroke);
 }
 
 .fuel-type {
-  font-size: 0.875rem;
-  color: var(--text-300);
+  font-size: 0.75rem;
+  color: var(--text-400);
   font-weight: 500;
-  min-width: 100px;
 }
 
 .fuel-price {
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 0.875rem;
+  font-weight: 700;
   color: var(--brand);
-}
-
-.fuel-avg {
-  font-size: 0.75rem;
-  color: var(--text-500);
-}
-
-.station-popup-hours {
-  font-size: 0.813rem;
-  color: var(--text-500);
-  margin: 0.75rem 0 0 0;
-  padding-top: 0.75rem;
-  border-top: 1px solid var(--stroke);
-}
-
-.station-popup-hours strong {
-  color: var(--text-300);
+  line-height: 1;
 }
 
 /* Leyenda del mapa */
