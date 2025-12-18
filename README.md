@@ -1,62 +1,110 @@
-# Zapetrol Frontend
+<div align="center">
 
-Aplicación web moderna para comparar precios de combustible en España en tiempo real. Construida con **React**, **TypeScript** y **Vite**.
+# ⛽ Zapetrol Frontend
 
----
+### Real-time fuel price comparison platform for Spain
 
-## ✨ Características principales
+![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![Mapbox](https://img.shields.io/badge/Mapbox-000000?style=for-the-badge&logo=mapbox&logoColor=white)
 
-- 🗺️ **Mapa interactivo** con Mapbox GL para visualizar estaciones
-- 📍 **Geolocalización** automática con fallback a Zaragoza
-- 🎯 **Búsqueda por radio** (5km) desde tu ubicación
-- 💰 **Comparación de precios** con la media nacional
-- 🔖 **Sistema de favoritos** para guardar tus estaciones
-- 🎨 **Marcadores coloreados** según precio (verde=barato, rojo=caro)
-- 📱 **Diseño responsive** con vistas móvil y desktop
-- 🌓 **Tema oscuro/claro moderno** con gradientes
-- 🔐 **Autenticación JWT** con panel de usuario
-- 👤 **Panel de administración** para gestionar usuarios
+[🚀 Live Demo](https://zapetrol-frontend-2369.vercel.app/)
+
+</div>
 
 ---
 
-## 📋 Requisitos previos
+## 📋 Table of Contents
 
-- **Node.js** >= 20.19+ o 22.12+
-- **npm**
+- [About](#-about)
+- [Key Features](#-key-features)
+- [Prerequisites](#-prerequisites)
+- [Installation](#-installation)
+- [Configuration](#-configuration)
+- [Running the Project](#-running-the-project)
+- [Features](#-features)
+- [Project Structure](#-project-structure)
+- [Design System](#-design-system)
+- [Responsive Views](#-responsive-views)
+- [Geolocation Flow](#-geolocation-flow)
+- [Technologies](#-technologies)
+- [Available Scripts](#%EF%B8%8F-available-scripts)
 
 ---
 
-## 🚀 Instalación y configuración
+## 🎯 About
 
-### 1. Instalar dependencias
+**Zapetrol** is a modern web application designed to help users find and compare real-time fuel prices at gas stations across Spain. Built with **React**, **TypeScript**, and **Vite**, it provides an intuitive and responsive interface for discovering the best fuel prices near you.
+
+---
+
+## ✨ Key Features
+
+- 🗺️ **Interactive Map** - Mapbox GL integration for visualizing gas stations
+- 📍 **Auto-Geolocation** - Automatic location detection with Zaragoza fallback
+- 🎯 **Radius Search** - Find stations within 5km of your location
+- 💰 **Price Comparison** - Compare prices against national averages
+- 🔖 **Favorites System** - Save your preferred gas stations
+- 🎨 **Color-Coded Markers** - Visual price indicators (green=cheap, red=expensive)
+- 📱 **Responsive Design** - Optimized for mobile and desktop
+- 🌓 **Modern Dark/Light Theme** - Beautiful gradient design
+- 🔐 **JWT Authentication** - Secure user login system
+- 👤 **Admin Panel** - User management dashboard
+
+---
+
+## 📋 Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- **Node.js** >= 20.19+ or 22.12+
+- **npm** (comes with Node.js)
+
+---
+
+## 🚀 Installation
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/IsabellaTobon/zapetrol-frontend.git
+cd zapetrol-frontend
+```
+
+### 2. Install dependencies
 
 ```bash
 npm install
 ```
 
-### 2. Configurar variables de entorno
+---
 
-Crea un archivo `.env` en la raíz del proyecto:
+## ⚙️ Configuration
+
+Create a `.env` file in the project root:
 
 ```env
-# URL del backend
-VITE_API_URL=http://localhost:3000 / server
+# Backend URL
+VITE_API_URL=http://localhost:3000/server
 
-# Token de Mapbox (obtener en https://mapbox.com)
-VITE_MAPBOX_TOKEN=tu_token_de_mapbox
+# Mapbox token (get yours at https://mapbox.com)
+VITE_MAPBOX_TOKEN=your_mapbox_token_here
 ```
 
-### 3. Ejecutar el proyecto
+---
 
-**Modo desarrollo:**
+## 🏃 Running the Project
+
+### Development Mode
 
 ```bash
 npm run dev
 ```
 
-La aplicación estará disponible en `http://localhost:5173`
+The application will be available at `http://localhost:5173`
 
-**Modo producción:**
+### Production Mode
 
 ```bash
 npm run build
@@ -65,132 +113,136 @@ npm run preview
 
 ---
 
-## 🎯 Funcionalidades
+## 🎯 Features
 
-### 🔐 Autenticación
+### 🔐 Authentication
 
-- Registro de nuevos usuarios con validación
-- Login con JWT
-- Indicador de fortaleza de contraseña
-- Sesión persistente con localStorage
+- User registration with validation
+- JWT-based login system
+- Password strength indicator
+- Persistent session with localStorage
 
-### 🗺️ Visualización de estaciones
+### 🗺️ Station Visualization
 
-- **Vista de mapa** (desktop): Mapa interactivo con marcadores
-- **Vista de lista** (móvil/desktop): Cards con filtros y paginación
-- **Toggle móvil**: Cambiar entre mapa y lista
-- **Geolocalización**: Detecta tu ubicación automáticamente
-- **Fallback**: Muestra Zaragoza si no hay ubicación o estás fuera de España
+- **Map View** (desktop): Interactive map with markers
+- **List View** (mobile/desktop): Cards with filters and pagination
+- **Mobile Toggle**: Switch between map and list views
+- **Auto-Geolocation**: Detects your location automatically
+- **Smart Fallback**: Shows Zaragoza if location unavailable or outside Spain
 
-### 🔍 Filtros y búsqueda
+### 🔍 Filters and Search
 
-- Por marca de gasolinera
-- Por tipo de combustible (Gasolina 95/98, Diesel, etc.)
-- Ordenar por precio (ascendente/descendente)
-- Ordenar por nombre (A-Z, Z-A)
+- Filter by gas station brand
+- Filter by fuel type (Gasoline 95/98, Diesel, etc.)
+- Sort by price (ascending/descending)
+- Sort by name (A-Z, Z-A)
 
-### ❤️ Favoritos
+### ❤️ Favorites
 
-- Guardar estaciones favoritas
-- Ver todas tus estaciones guardadas
-- Sincronización con el backend
+- Save favorite gas stations
+- View all saved stations
+- Backend synchronization
 
-### 👨‍💼 Panel de administración
+### 👨‍💼 Admin Panel
 
-- Ver lista de usuarios registrados
-- Editar roles (admin/user)
-- Eliminar usuarios
-- Solo accesible para administradores
+- View registered users
+- Edit user roles (admin/user)
+- Delete users
+- Admin-only access
 
 ---
 
-## 📁 Estructura del proyecto
+## 📁 Project Structure
 
 ```
 src/
-├── assets/              # Imágenes y recursos estáticos
-├── components/          # Componentes reutilizables
-│   ├── layout/         # Navbar, Footer
-│   ├── stations/       # StationCard, StationList, MapView, Filters
-│   └── ui/             # Modal, Pagination, PasswordStrength
-├── contexts/           # Context API (Auth, AuthModal)
-├── hooks/              # Custom hooks (useAuth, useFavorites)
-├── lib/                # Utilidades y API client
-├── pages/              # Páginas principales (Home, Favorites, AdminPanel)
-└── styles/             # CSS y theme.css con variables globales
+├── assets/          # Images and static resources
+├── components/      # Reusable components
+│   ├── layout/     # Navbar, Footer
+│   ├── stations/   # StationCard, StationList, MapView, Filters
+│   └── ui/         # Modal, Pagination, PasswordStrength
+├── contexts/        # Context API (Auth, AuthModal)
+├── hooks/           # Custom hooks (useAuth, useFavorites)
+├── lib/             # Utilities and API client
+├── pages/           # Main pages (Home, Favorites, AdminPanel)
+└── styles/          # CSS and theme.css with global variables
 ```
 
 ---
 
-## 🎨 Sistema de diseño
+## 🎨 Design System
 
-El proyecto utiliza un sistema de diseño moderno con:
+The project features a modern design system with:
 
-- **Variables CSS** centralizadas en `theme.css`
-- **Componentes reutilizables** (`.gradient-heading-h1`, `.loading-spinner`, etc.)
-- **Gradientes de marca**: Violeta a azul (`#8a5fe8` → `#5d5fef`)
-- **Tema oscuro** con fondos `#1a1d29` y textos con opacidad
-- **Transiciones suaves** en todos los elementos
-- **Glass morphism** en cards y modales
-
----
-
-## 🛠️ Scripts disponibles
-
-- `npm run dev` - Inicia servidor de desarrollo
-- `npm run build` - Compila para producción
-- `npm run preview` - Previsualiza build de producción
-- `npm run lint` - Ejecuta ESLint
+- **Centralized CSS Variables** in `theme.css`
+- **Reusable Components** (`.gradient-heading-h1`, `.loading-spinner`, etc.)
+- **Brand Gradients**: Violet to blue (`#8a5fe8` → `#5d5fef`)
+- **Dark Theme** with `#1a1d29` backgrounds and opacity-based text
+- **Smooth Transitions** on all interactive elements
+- **Glass Morphism** effects on cards and modals
 
 ---
 
-## 🔧 Tecnologías utilizadas
-
-- **React 18** - Biblioteca UI
-- **TypeScript** - Tipado estático
-- **Vite** - Build tool ultrarrápido
-- **React Router** - Navegación SPA
-- **Mapbox GL** - Mapas interactivos
-- **Axios** - Cliente HTTP
-- **CSS Modules** - Estilos modulares
-
----
-
-## 📱 Vistas responsive
+## 📱 Responsive Views
 
 ### Desktop (>768px)
+- Map on top, station list below
+- Sidebar with filters
+- Grid cards (2-3 columns)
 
-- Mapa arriba, lista de estaciones abajo
-- Sidebar con filtros
-- Cards en grid 2-3 columnas
-
-### Móvil (<768px)
-
-- Toggle entre vista mapa/lista
-- Filtros en modal/collapse
-- Cards en columna única
-- Navegación simplificada
+### Mobile (<768px)
+- Toggle between map/list views
+- Filters in modal/collapse
+- Single column cards
+- Simplified navigation
 
 ---
 
-## 🚦 Flujo de geolocalización
+## 🚦 Geolocation Flow
 
 ```
-1. Carga de página
+1. Page loads
    ↓
-2. Muestra estaciones de Zaragoza inmediatamente
+2. Shows Zaragoza stations immediately
    ↓
-3. Solicita geolocalización (timeout 8s)
+3. Requests geolocation (8s timeout)
    ↓
-   ├─ Usuario ACEPTA → Actualiza a su ubicación
-   ├─ Usuario DENIEGA → Muestra botón "Activar ubicación"
-   └─ Fuera de España → Mensaje + mantiene Zaragoza
+   ├─ User ACCEPTS → Updates to their location
+   ├─ User DENIES → Shows "Enable Location" button
+   └─ Outside Spain → Message + keeps Zaragoza
 ```
 
 ---
 
-## 📄 Licencia
+## 🔧 Technologies
 
-Este proyecto es parte de un TFM (Trabajo Fin de Máster).
+- **React 18** - UI Library
+- **TypeScript** - Static typing
+- **Vite** - Ultra-fast build tool
+- **React Router** - SPA navigation
+- **Mapbox GL** - Interactive maps
+- **Axios** - HTTP client
+- **CSS Modules** - Modular styling
 
 ---
+
+## 🛠️ Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
+
+---
+
+## 📄 License
+
+This project is part of a Master's Thesis (TFM - Trabajo Fin de Máster).
+
+---
+
+<div align="center">
+
+**Built with ⛽ for smarter fuel decisions**
+
+</div>
