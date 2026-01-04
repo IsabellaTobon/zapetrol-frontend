@@ -33,7 +33,7 @@ function ThemeToggle() {
 export default function Navbar({ onOpenAuthModal }: NavbarProps) {
   const { user, logout } = useAuthContext();
 
-  // Muestra el botón solo si el usuario existe y tiene role admin
+  // Muestra el botón solo si el usuario tiene role admin
   const isAdmin = user?.role === 'admin';
 
   const shortName = user

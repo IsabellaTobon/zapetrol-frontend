@@ -192,7 +192,7 @@ export async function getStationsInRadiusWithDetailsAPI(
   return data;
 }
 
-// === FAVORITES ENDPOINTS ===
+// FAVORITES ENDPOINTS
 
 export async function getFavoritesAPI(): Promise<number[]> {
   const { data } = await api.get("/favorites");

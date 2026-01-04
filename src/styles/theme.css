@@ -175,12 +175,12 @@ a {
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand) 20%, transparent);
 }
 
-/* Transiciones suaves al cambiar tema */
+/* Transiciones */
 * {
   transition: background-color var(--transition), color var(--transition), border-color var(--transition);
 }
 
-/* === Componentes de texto reutilizables === */
+/* Componentes de texto */
 .gradient-heading-h1 {
   font-size: var(--heading-h1-size);
   font-weight: var(--heading-weight-bold);
@@ -244,7 +244,7 @@ a {
   box-shadow: 0 0 12px color-mix(in srgb, var(--brand) 40%, transparent);
 }
 
-/* === Botones reutilizables === */
+/* Botones reutilizables */
 .btn-gradient {
   background: var(--gradient-brand);
   color: #fff;
@@ -264,7 +264,7 @@ a {
   transform: scale(0.98);
 }
 
-/* === Spinner de carga === */
+/* Spinner de carga */
 .loading-spinner {
   width: 48px;
   height: 48px;
@@ -280,7 +280,7 @@ a {
   }
 }
 
-/* === Mensaje de carga === */
+/* Mensaje de carga */
 .loading-message {
   display: flex;
   flex-direction: column;
@@ -296,7 +296,7 @@ a {
   font-weight: 500;
 }
 
-/* === Empty state === */
+/* Empty state */
 .empty-state {
   display: flex;
   flex-direction: column;
@@ -333,7 +333,7 @@ a {
   margin: 0;
 }
 
-/* === Animaciones reutilizables === */
+/* Animaciones reutilizables */
 @keyframes fadeIn {
   from {
     opacity: 0;
