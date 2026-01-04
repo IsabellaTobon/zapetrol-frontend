@@ -79,12 +79,6 @@ export default function MapView({ stations, userLocation }: MapViewProps) {
     return (
       <div className="map-error">
         <p>⚠️ Falta configurar VITE_MAPBOX_TOKEN en las variables de entorno</p>
-        {/* <p className="map-error-hint">
-          Obtén un token gratuito en{' '}
-          <a href="https://www.mapbox.com/" target="_blank" rel="noopener noreferrer">
-            mapbox.com
-          </a>
-        </p> */}
       </div>
     );
   }

@@ -101,7 +101,7 @@ export default function AdminPanel() {
         <input
           type="text"
           className="search-input"
-          placeholder="🔍 Buscar por ID, nombre o email..."
+          placeholder="🔍 Buscar por ID, nombre o email"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />

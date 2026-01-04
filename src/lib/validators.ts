@@ -14,7 +14,7 @@ export type FieldValidators = {
   [key: string]: ValidationRule[];
 };
 
-// ========== CONSTANTES ==========
+// CONSTANTES
 
 export const VALIDATION_MESSAGES = {
   required: "Este campo es obligatorio",
@@ -37,7 +37,7 @@ export const VALIDATION_MESSAGES = {
   },
 } as const;
 
-// ========== EXPRESIONES REGULARES ==========
+// EXPRESIONES REGULARES
 
 export const REGEX = {
   email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
